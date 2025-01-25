@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details - CineShot</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* For backdrop image */
+    #backdrop {
+      height: 70vh;
+      background-size: cover;
+      background-position: center;
+    }
+    /* Custom styles for links */
+    .custom-link {
+      color: #60a5fa;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+    .custom-link:hover {
+      color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+  <!-- Navbar -->
+  <nav class="w-full p-4 bg-gradient-to-r from-indigo-600 to-blue-500 shadow-lg">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-semibold text-white">CineShot</h1>
+      <a href="results.html" class="text-lg text-white hover:text-indigo-200">Back to Results</a>
+    </div>
+  </nav>
+
+  <!-- Movie Details Section -->
+  <section id="movie-details" class="py-20 bg-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+      
+      <!-- Left Side: Backdrop Image -->
+      <div class="w-full lg:w-2/5">
+        <div id="backdrop" class="bg-cover" style="background-image: url('');"></div>
+        <div class="mt-4 text-center text-gray-300">
+          <p class="text-lg"> Release Date: <span id="release-date"></span></p>
+          <p class="text-lg">Rating:  <span id="vote-average"></span>/10 ⭐ </p>
+          <p class="text-lg">Votes  : <span id="vote-count"></span></p>
+          <p class="text-lg"> Countries of Origin : <span id="production-countries"></span></p>
+        </div>
+
+        <!-- Production Companies Card (Visible on Desktop) -->
+        <div class="mt-8 bg-gray-700 p-4 rounded-lg lg:block hidden">
+          <h3 class="text-xl font-semibold text-white">Production Companies</h3>
+          <div id="production-companies-desktop" class="mt-2 space-y-4">
+            <!-- Production companies will be injected here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Movie Information -->
+      <div class="w-full lg:w-3/5">
+        <h2 class="text-4xl font-bold text-white mb-4" id="movie-title"></h2>
+        <p class="text-lg text-gray-400 mb-4" id="movie-overview"></p>
+
+        <div class="text-gray-300">
+          <p><strong>Genres:</strong> <span id="movie-genres"></span></p>
+          <p><strong>Runtime:</strong> <span id="runtime"></span> min</p>
+          <p><strong>Budget:</strong> $<span id="budget"></span></p>
+          <p><strong>Revenue:</strong> $<span id="revenue"></span></p>
+          <p><strong>Language:</strong> <span id="original-language"></span></p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Images Card -->
+          <a href="http://127.0.0.1:3002/images.html?id=${movieId}" class="block bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition ease-in-out duration-300">
+            <h3 class="text-xl font-semibold text-white">Images</h3>
+            <div id="images" class="mt-2">
+              <!-- Poster image will be injected here -->
+            </div>
+          </a>
+
+          <!-- Cast Card -->
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="text-xl font-semibold text-white">Cast</h3>
+            <div id="cast-list" class="mt-2 space-y-4">
+              <!-- Cast details will be injected here -->
+            </div>
+          </div>
+
+          <!-- Reviews Card -->
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="text-xl font-semibold text-white">Reviews</h3>
+            <div id="reviews" class="mt-2 space-y-4">
+              <!-- Reviews will be injected here -->
+            </div>
+          </div>
+
+          <!-- Crew Card -->
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="text-xl font-semibold text-white">Crew</h3>
+            <div id="crew" class="mt-2 space-y-4">
+              <!-- Crew details will be injected here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Production Companies Card (Visible on Mobile) -->
+        <div class="mt-8 bg-gray-700 p-4 rounded-lg lg:hidden">
+          <h3 class="text-xl font-semibold text-white">Production Companies</h3>
+          <div id="production-companies-mobile" class="mt-2 space-y-4">
+            <!-- Production companies will be injected here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Get the movie ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+
+    // Fetch movie details, credits, and reviews
+    async function fetchMovieDetails() {
+      // Fetch movie details
+      const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=3b2a03d9bd97894a3db2bca78d548059`);
+      const movie = await movieResponse.json();
+
+      // Fetch credits (cast and crew)
+      const creditsResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=3b2a03d9bd97894a3db2bca78d548059`);
+      const credits = await creditsResponse.json();
+
+      // Fetch reviews
+      const reviewsResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=3b2a03d9bd97894a3db2bca78d548059`);
+      const reviews = await reviewsResponse.json();
+
+      // Set the backdrop image
+      document.getElementById('backdrop').style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+
+      // Set the movie details
+      document.getElementById('movie-title').textContent = movie.original_title;
+      document.getElementById('movie-overview').textContent = movie.overview;
+      document.getElementById('release-date').textContent = new Date(movie.release_date).toLocaleDateString();
+      document.getElementById('vote-average').textContent = Math.round(movie.vote_average);
+      document.getElementById('vote-count').textContent = movie.vote_count;
+      document.getElementById('production-countries').textContent = movie.production_countries.map(c => c.name).join(", ");
+      document.getElementById('movie-genres').textContent = movie.genres.map(g => g.name).join(", ");
+      document.getElementById('runtime').textContent = movie.runtime;
+      document.getElementById('budget').textContent = movie.budget.toLocaleString();
+      document.getElementById('revenue').textContent = movie.revenue.toLocaleString();
+      document.getElementById('original-language').textContent = movie.original_language;
+
+      // Set poster image in the Images card
+      const posterImage = movie.poster_path ? `<img src="https://image.tmdb.org/t/p/original${movie.poster_path}" alt="${movie.original_title}" class="w-full h-auto rounded-lg">` : "<p>No poster available</p>";
+      document.getElementById('images').innerHTML = posterImage;
+
+      // Set cast details (first 6 cast members)
+      const castList = credits.cast.slice(0, 6).map(cast => `
+        <div class="flex items-center space-x-4">
+          <img src="https://image.tmdb.org/t/p/original${cast.profile_path}" alt="${cast.original_name}" class="w-16 h-16 rounded-full">
+          <div>
+            <p class="text-white"><strong>Name:</strong> ${cast.original_name}</p>
+            <p class="text-gray-400"><strong>Character:</strong> ${cast.character}</p>
+          </div>
+        </div>
+      `).join("");
+      document.getElementById('cast-list').innerHTML = castList || "<p>No cast available</p>";
+
+      // Set crew details (first 5 crew members)
+      const crewList = credits.crew.slice(0, 5).map(crew => `
+        <div class="flex items-center space-x-4">
+          <img src="https://image.tmdb.org/t/p/original${crew.profile_path}" alt="${crew.original_name}" class="w-16 h-16 rounded-full">
+          <div>
+            <p class="text-white"><strong>Name:</strong> ${crew.original_name}</p>
+            <p class="text-gray-400"><strong>Job:</strong> ${crew.job}</p>
+          </div>
+        </div>
+      `).join("");
+      document.getElementById('crew').innerHTML = crewList || "<p>No crew available</p>";
+
+      // Set reviews (first 3 reviews)
+      const reviewList = reviews.results.slice(0, 3).map(review => `
+        <div class="flex items-center space-x-4">
+          <img src="https://image.tmdb.org/t/p/original${review.author_details.avatar_path}" alt="${review.author_details.name}" class="w-16 h-16 rounded-full">
+          <div>
+            <p class="text-white"><strong>Name:</strong> <a href="${review.url}" target="_blank" class="custom-link">${review.author_details.name}</a></p>
+            <p class="text-gray-400"><strong>Rating:</strong> ${review.author_details.rating}/10 ⭐</p>
+          </div>
+        </div>
+      `).join("");
+      document.getElementById('reviews').innerHTML = reviewList || "<p>No reviews available</p>";
+
+      // Set production companies (first 5 companies)
+      const productionCompaniesList = movie.production_companies.slice(0, 5).map(company => `
+        <div class="flex items-center space-x-4">
+          <img src="https://image.tmdb.org/t/p/original${company.logo_path}" alt="${company.name}" class="w-16 h-16 rounded-full">
+          <div>
+            <p class="text-white"><strong>Name:</strong> ${company.name}</p>
+            <p class="text-gray-400"><strong>Country:</strong> ${company.origin_country}</p>
+          </div>
+        </div>
+      `).join("");
+      document.getElementById('production-companies-desktop').innerHTML = productionCompaniesList || "<p>No production companies available</p>";
+      document.getElementById('production-companies-mobile').innerHTML = productionCompaniesList || "<p>No production companies available</p>";
+    }
+
+    // Call the function to fetch movie details
+    fetchMovieDetails();
+  </script>
+
+</body>
+</html>

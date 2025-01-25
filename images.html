@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Images - CineShot</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Overlay button styling */
+    .image-container {
+      position: relative;
+    }
+    .download-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px; /* Changed from left: 10px to right: 10px */
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+  <!-- Navbar -->
+  <nav class="w-full p-4 bg-gradient-to-r from-indigo-600 to-blue-500 shadow-lg">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-semibold text-white">CineShot</h1>
+      <a href="index.html" class="text-lg text-white hover:text-indigo-200">Back to Home</a>
+    </div>
+  </nav>
+
+  <!-- Image Selection Section -->
+  <section class="py-12 bg-gray-800">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-white mb-8">Select Image Type</h2>
+      <div class="flex justify-center space-x-6">
+        <button id="wallpapers-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Wallpapers</button>
+        <button id="logos-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Logos</button>
+        <button id="posters-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Posters</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Display Section -->
+  <section id="image-display" class="py-12 bg-gray-900">
+    <div class="max-w-7xl mx-auto">
+      <h3 id="image-type-title" class="text-3xl font-bold text-white mb-8 text-center"></h3>
+      <div id="image-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Images will be injected here -->
+      </div>
+      <div class="text-center mt-8">
+        <button id="load-more-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300 hidden">Load More</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Get the movie ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+
+    // Variables to store image data and current type
+    let imagesData = [];
+    let currentType = '';
+    let currentPage = 1;
+    const imagesPerPage = 9;
+
+    // Function to fetch images from the API
+    async function fetchImages(type) {
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=3b2a03d9bd97894a3db2bca78d548059`);
+      const data = await response.json();
+      imagesData = data[type] || []; // Store the images based on type (backdrops, logos, posters)
+      currentType = type;
+      currentPage = 1;
+      displayImages();
+    }
+
+    // Function to display images
+    function displayImages() {
+      const imageGrid = document.getElementById('image-grid');
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      const imageTypeTitle = document.getElementById('image-type-title');
+
+      // Clear previous images
+      imageGrid.innerHTML = '';
+
+      // Set the title based on the current type
+      imageTypeTitle.textContent = currentType === 'backdrops' ? 'Wallpapers' :
+                                   currentType === 'logos' ? 'Logos' : 'Posters';
+
+      // Calculate the number of images to display
+      const endIndex = currentPage * imagesPerPage;
+      const imagesToDisplay = imagesData.slice(0, endIndex);
+
+      // Display images
+      imagesToDisplay.forEach(image => {
+        const imageUrl = `https://image.tmdb.org/t/p/original${image.file_path}`;
+        const imageCard = `
+          <div class="image-container bg-gray-700 p-4 rounded-lg relative">
+            <img src="${imageUrl}" alt="Image" class="w-full h-auto rounded-lg">
+            <!-- Download Button Overlay -->
+            <button
+              onclick="downloadImage('${imageUrl}')"
+              class="download-button cursor-pointer bg-gray-800 px-3 py-2 rounded-md text-white tracking-wider shadow-xl animate-bounce hover:animate-none"
+            >
+              <svg
+                class="w-5 h-5"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        `;
+        imageGrid.innerHTML += imageCard;
+      });
+
+      // Show or hide the Load More button
+      if (imagesData.length > endIndex) {
+        loadMoreBtn.classList.remove('hidden');
+      } else {
+        loadMoreBtn.classList.add('hidden');
+      }
+    }
+
+    // Function to download an image
+    function downloadImage(imageUrl) {
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.download = `image_${Date.now()}.jpg`; // Set a unique filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Event listeners for buttons
+    document.getElementById('wallpapers-btn').addEventListener('click', () => fetchImages('backdrops'));
+    document.getElementById('logos-btn').addEventListener('click', () => fetchImages('logos'));
+    document.getElementById('posters-btn').addEventListener('click', () => fetchImages('posters'));
+
+    // Load More button functionality
+    document.getElementById('load-more-btn').addEventListener('click', () => {
+      currentPage++;
+      displayImages();
+    });
+  </script>
+
+</body>
+</html>
