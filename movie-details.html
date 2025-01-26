@@ -80,7 +80,7 @@
 
         <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
           <!-- Images Card -->
-          <a href="http://127.0.0.1:3002/images.html?id=${movieId}" class="block bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition ease-in-out duration-300">
+          <a href="#" id="images-link" class="block bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition ease-in-out duration-300">
             <h3 class="text-xl font-semibold text-white">Images</h3>
             <div id="images" class="mt-2">
               <!-- Poster image will be injected here -->
@@ -210,6 +210,10 @@
       `).join("");
       document.getElementById('production-companies-desktop').innerHTML = productionCompaniesList || "<p>No production companies available</p>";
       document.getElementById('production-companies-mobile').innerHTML = productionCompaniesList || "<p>No production companies available</p>";
+
+      // Dynamically set the "Images" link to pass the correct movie ID (FIXED LINE)
+      const imagesLink = document.getElementById('images-link');
+      imagesLink.href = `images.html?id=${movieId}`;  // Changed to relative path
     }
 
     // Call the function to fetch movie details

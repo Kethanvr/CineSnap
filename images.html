@@ -4,27 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Images - CineShot</title>
-  
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-    /* Overlay button styling */
-    .image-container {
-      position: relative;
-    }
-    .download-button {
+    body { font-family: 'Poppins', sans-serif; }
+    .image-container { position: relative; }
+    .download-btn { 
       position: absolute;
-      bottom: 10px;
-      right: 10px; /* Changed from left: 10px to right: 10px */
-      z-index: 10;
+      bottom: 1rem;
+      right: 1rem;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
     }
+    .download-btn:hover { opacity: 1; }
   </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -33,132 +25,124 @@
   <nav class="w-full p-4 bg-gradient-to-r from-indigo-600 to-blue-500 shadow-lg">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <h1 class="text-3xl font-semibold text-white">CineShot</h1>
-      <a href="index.html" class="text-lg text-white hover:text-indigo-200">Back to Home</a>
+      <a href="results.html" class="text-lg text-white hover:text-indigo-200">Back to Results</a>
     </div>
   </nav>
 
-  <!-- Image Selection Section -->
-  <section class="py-12 bg-gray-800">
-    <div class="max-w-7xl mx-auto text-center">
-      <h2 class="text-4xl font-bold text-white mb-8">Select Image Type</h2>
-      <div class="flex justify-center space-x-6">
-        <button id="wallpapers-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Wallpapers</button>
-        <button id="logos-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Logos</button>
-        <button id="posters-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300">Posters</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Image Display Section -->
-  <section id="image-display" class="py-12 bg-gray-900">
+  <!-- Images Section -->
+  <section class="py-20 bg-gray-800">
     <div class="max-w-7xl mx-auto">
-      <h3 id="image-type-title" class="text-3xl font-bold text-white mb-8 text-center"></h3>
-      <div id="image-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Images will be injected here -->
+      <h2 class="text-4xl font-bold text-white mb-8 px-4">Movie Images</h2>
+
+      <!-- Filter Buttons -->
+      <div class="flex gap-4 mb-8 px-4">
+        <button id="wallpaper-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+          Wallpaper
+        </button>
+        <button id="logo-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+          Logo
+        </button>
+        <button id="poster-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+          Poster
+        </button>
       </div>
-      <div class="text-center mt-8">
-        <button id="load-more-btn" class="bg-blue-500 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600 transition ease-in-out duration-300 hidden">Load More</button>
+
+      <!-- Image Grid -->
+      <div id="image-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4"></div>
+
+      <!-- Load More Button -->
+      <div class="mt-8 flex justify-center">
+        <button id="load-more" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition hidden">
+          Load More
+        </button>
       </div>
     </div>
   </section>
 
   <script>
-    // Get the movie ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
-
-    // Variables to store image data and current type
-    let imagesData = [];
-    let currentType = '';
-    let currentPage = 1;
+    let currentOffset = 0;
+    let currentType = 'wallpaper';
     const imagesPerPage = 9;
 
-    // Function to fetch images from the API
-    async function fetchImages(type) {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=3b2a03d9bd97894a3db2bca78d548059`);
+    async function fetchMovieImages(type, offset = 0) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=3b2a03d9bd97894a3db2bca78d548059`
+      );
       const data = await response.json();
-      imagesData = data[type] || []; // Store the images based on type (backdrops, logos, posters)
-      currentType = type;
-      currentPage = 1;
-      displayImages();
+      
+      let images = [];
+      switch(type) {
+        case 'wallpaper': images = data.backdrops; break;
+        case 'logo': images = data.logos; break;
+        case 'poster': images = data.posters; break;
+      }
+
+      return images.slice(offset, offset + imagesPerPage);
     }
 
-    // Function to display images
-    function displayImages() {
-      const imageGrid = document.getElementById('image-grid');
-      const loadMoreBtn = document.getElementById('load-more-btn');
-      const imageTypeTitle = document.getElementById('image-type-title');
+    function createImageCard(image) {
+      const card = document.createElement('div');
+      card.className = 'bg-gray-700 p-4 rounded-lg image-container';
+      
+      const img = document.createElement('img');
+      img.src = `https://image.tmdb.org/t/p/original${image.file_path}`;
+      img.alt = 'Movie Image';
+      img.className = 'w-full h-auto rounded-lg';
+      
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'download-btn bg-white p-2 rounded-full shadow-lg';
+      downloadBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+      `;
+      
+      downloadBtn.onclick = () => downloadImage(img.src);
+      card.appendChild(img);
+      card.appendChild(downloadBtn);
+      
+      return card;
+    }
 
-      // Clear previous images
-      imageGrid.innerHTML = '';
-
-      // Set the title based on the current type
-      imageTypeTitle.textContent = currentType === 'backdrops' ? 'Wallpapers' :
-                                   currentType === 'logos' ? 'Logos' : 'Posters';
-
-      // Calculate the number of images to display
-      const endIndex = currentPage * imagesPerPage;
-      const imagesToDisplay = imagesData.slice(0, endIndex);
-
-      // Display images
-      imagesToDisplay.forEach(image => {
-        const imageUrl = `https://image.tmdb.org/t/p/original${image.file_path}`;
-        const imageCard = `
-          <div class="image-container bg-gray-700 p-4 rounded-lg relative">
-            <img src="${imageUrl}" alt="Image" class="w-full h-auto rounded-lg">
-            <!-- Download Button Overlay -->
-            <button
-              onclick="downloadImage('${imageUrl}')"
-              class="download-button cursor-pointer bg-gray-800 px-3 py-2 rounded-md text-white tracking-wider shadow-xl animate-bounce hover:animate-none"
-            >
-              <svg
-                class="w-5 h-5"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                ></path>
-              </svg>
-            </button>
-          </div>
-        `;
-        imageGrid.innerHTML += imageCard;
-      });
-
-      // Show or hide the Load More button
-      if (imagesData.length > endIndex) {
-        loadMoreBtn.classList.remove('hidden');
-      } else {
-        loadMoreBtn.classList.add('hidden');
+    async function downloadImage(url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `movie-image-${Date.now()}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Download failed:', error);
       }
     }
 
-    // Function to download an image
-    function downloadImage(imageUrl) {
-      const link = document.createElement('a');
-      link.href = imageUrl;
-      link.download = `image_${Date.now()}.jpg`; // Set a unique filename
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    async function renderImages(type, reset = true) {
+      currentType = type;
+      if (reset) currentOffset = 0;
+      
+      const images = await fetchMovieImages(type, currentOffset);
+      const grid = document.getElementById('image-grid');
+      
+      if (reset) grid.innerHTML = '';
+      images.forEach(image => grid.appendChild(createImageCard(image)));
+      
+      currentOffset += imagesPerPage;
+      document.getElementById('load-more').classList.toggle('hidden', images.length < imagesPerPage);
     }
 
-    // Event listeners for buttons
-    document.getElementById('wallpapers-btn').addEventListener('click', () => fetchImages('backdrops'));
-    document.getElementById('logos-btn').addEventListener('click', () => fetchImages('logos'));
-    document.getElementById('posters-btn').addEventListener('click', () => fetchImages('posters'));
+    // Event Listeners
+    document.getElementById('wallpaper-btn').addEventListener('click', () => renderImages('wallpaper'));
+    document.getElementById('logo-btn').addEventListener('click', () => renderImages('logo'));
+    document.getElementById('poster-btn').addEventListener('click', () => renderImages('poster'));
+    document.getElementById('load-more').addEventListener('click', () => renderImages(currentType, false));
 
-    // Load More button functionality
-    document.getElementById('load-more-btn').addEventListener('click', () => {
-      currentPage++;
-      displayImages();
-    });
+    // Initial load
+    renderImages('wallpaper');
   </script>
 
 </body>
