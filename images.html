@@ -17,6 +17,19 @@
       transition: opacity 0.2s ease;
     }
     .download-btn:hover { opacity: 1; }
+     /* Animation for header */
+     .animate-header {
+      animation: fadeIn 2s ease-out;
+    }
+    /* FadeIn animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -229,6 +242,11 @@
 
     // Initial load
     renderImages('wallpaper');
+    // Toggle Mobile Menu
+    document.getElementById('mobile-menu-button').addEventListener('click', () => {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    });
   </script>
 
 </body>
