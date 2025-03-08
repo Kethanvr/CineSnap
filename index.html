@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/movie.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CineSnap - Your ultimate movie discovery platform. Find the latest movies, reviews, cast information, and high-quality images."
+    />
+    <meta name="theme-color" content="#1976d2" />
+    <title>CineSnap - Movie Discovery Platform</title>
+    <!-- Primary Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Secondary Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0f172a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loader-content {
+        text-align: center;
+        color: #f8fafc;
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #6366f1;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+      .loader-text {
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loader">
+      <div class="loader-content">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Loading CineSnap...</div>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          loader.style.transition = "opacity 0.5s ease";
+          setTimeout(() => {
+            loader.style.display = "none";
+          }, 500);
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
