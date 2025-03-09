@@ -14,11 +14,18 @@ import {
   Chip,
   Divider,
   Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Tooltip,
 } from "@mui/material";
 import {
   getMovieDetails,
   formatCurrency,
   formatRuntime,
+  getMovieWatchProviders,
+  determineMovieSuccess,
 } from "../services/movieApi";
 import type { Movie } from "../types/movie";
 import {
@@ -29,17 +36,27 @@ import {
   Info,
   Business,
   ArrowForward,
+  LocalMovies,
+  Theaters,
 } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: movie, isLoading } = useQuery<Movie>({
+  const { data: movie, isLoading: isLoadingMovie } = useQuery<Movie>({
     queryKey: ["movie", id],
     queryFn: () => getMovieDetails(id || ""),
     enabled: !!id,
   });
+
+  const { data: watchProviders, isLoading: isLoadingProviders } = useQuery({
+    queryKey: ["watchProviders", id],
+    queryFn: () => getMovieWatchProviders(id || ""),
+    enabled: !!id,
+  });
+
+  const isLoading = isLoadingMovie || isLoadingProviders;
 
   if (isLoading) {
     return (
@@ -67,6 +84,9 @@ const MovieDetails = () => {
       </Box>
     );
   }
+
+  const movieStatus = movie ? determineMovieSuccess(movie) : null;
+  const usProviders = watchProviders?.US;
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
@@ -239,10 +259,109 @@ const MovieDetails = () => {
                         </Typography>
                         <Typography>{formatCurrency(movie.budget)}</Typography>
                       </Box>
+                      {movieStatus && (
+                        <Box>
+                          <Typography variant="subtitle2" color="text.secondary">
+                            Box Office Performance
+                          </Typography>
+                          <Chip
+                            icon={<Theaters />}
+                            label={movieStatus}
+                            color={
+                              movieStatus === "Blockbuster"
+                                ? "success"
+                                : movieStatus === "Hit"
+                                ? "primary"
+                                : "error"
+                            }
+                            sx={{ mt: 1 }}
+                          />
+                        </Box>
+                      )}
                     </Stack>
                   </CardContent>
                 </Card>
               </Grid>
+
+              {/* Watch Providers Card */}
+              {usProviders && (
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        Where to Watch
+                      </Typography>
+                      {usProviders.flatrate && (
+                        <Box sx={{ mb: 3 }}>
+                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                            Stream
+                          </Typography>
+                          <Stack direction="row" spacing={1} flexWrap="wrap">
+                            {usProviders.flatrate.map((provider) => (
+                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                                <Avatar
+                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                                  alt={provider.provider_name}
+                                  sx={{ width: 40, height: 40 }}
+                                />
+                              </Tooltip>
+                            ))}
+                          </Stack>
+                        </Box>
+                      )}
+                      {usProviders.rent && (
+                        <Box sx={{ mb: 3 }}>
+                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                            Rent
+                          </Typography>
+                          <Stack direction="row" spacing={1} flexWrap="wrap">
+                            {usProviders.rent.map((provider) => (
+                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                                <Avatar
+                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                                  alt={provider.provider_name}
+                                  sx={{ width: 40, height: 40 }}
+                                />
+                              </Tooltip>
+                            ))}
+                          </Stack>
+                        </Box>
+                      )}
+                      {usProviders.buy && (
+                        <Box>
+                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                            Buy
+                          </Typography>
+                          <Stack direction="row" spacing={1} flexWrap="wrap">
+                            {usProviders.buy.map((provider) => (
+                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                                <Avatar
+                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                                  alt={provider.provider_name}
+                                  sx={{ width: 40, height: 40 }}
+                                />
+                              </Tooltip>
+                            ))}
+                          </Stack>
+                        </Box>
+                      )}
+                      {usProviders.link && (
+                        <Button
+                          href={usProviders.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variant="contained"
+                          fullWidth
+                          sx={{ mt: 3 }}
+                        >
+                          View All Watch Options
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+
               {/* Production Companies Card */}
               <Grid item xs={12} md={6}>
                 <Card>

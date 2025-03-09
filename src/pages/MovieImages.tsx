@@ -219,7 +219,7 @@ const MovieImages = () => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        opacity: 0,
+                        opacity: { xs: 1, sm: 0 },
                         transition: "opacity 0.2s",
                       }}
                     >

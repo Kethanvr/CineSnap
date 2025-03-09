@@ -428,4 +428,27 @@ export const removeFromList = async (
   return response.json();
 };
 
+export const getMovieWatchProviders = async (movieId: string) => {
+  const response = await movieApi.get(`/movie/${movieId}/watch/providers`);
+  return response.data.results;
+};
+
+export const getAvailableRegions = async () => {
+  const response = await movieApi.get('/watch/providers/regions');
+  return response.data.results;
+};
+
+export const determineMovieSuccess = (movie: Movie) => {
+  const budget = movie.budget;
+  const revenue = movie.revenue;
+  
+  if (!budget || !revenue) return null;
+  
+  const roi = (revenue - budget) / budget;
+  
+  if (roi >= 2.5) return 'Blockbuster';
+  if (roi >= 1) return 'Hit';
+  return 'Flop';
+};
+
 export default movieApi;
