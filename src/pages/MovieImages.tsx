@@ -203,7 +203,8 @@ const MovieImages = () => {
                             : activeTab === "logos"
                             ? "16/9"
                             : "16/9",
-                        objectFit: "cover",
+                        objectFit: activeTab === "logos" ? "contain" : "cover",
+                        bgcolor: activeTab === "logos" ? "black" : "inherit",
                       }}
                       onClick={() => handlePreview(image)}
                     />

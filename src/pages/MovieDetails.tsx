@@ -1,23 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Container,
+  Grid,
   Typography,
   Box,
-  Grid,
   Card,
   CardContent,
   CardMedia,
   Rating,
+  Chip,
+  Avatar,
   Stack,
   Button,
-  Chip,
-  Divider,
-  Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Tooltip,
 } from "@mui/material";
 import {
@@ -62,7 +57,7 @@ const MovieDetails = () => {
     return (
       <Box
         sx={{
-          minHeight: "100vh",
+          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -75,12 +70,15 @@ const MovieDetails = () => {
 
   if (!movie) {
     return (
-      <Box sx={{ py: 4 }}>
-        <Container maxWidth="xl">
-          <Typography variant="h4" align="center">
-            Movie not found
-          </Typography>
-        </Container>
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography>Movie not found</Typography>
       </Box>
     );
   }
@@ -90,13 +88,14 @@ const MovieDetails = () => {
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
-      {/* Backdrop */}
+      {/* Backdrop Section */}
       <Box
         sx={{
+          height: "70vh",
           position: "relative",
-          height: { xs: "300px", md: "600px" },
-          width: "100%",
-          overflow: "hidden",
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           "&::before": {
             content: '""',
             position: "absolute",
@@ -104,362 +103,272 @@ const MovieDetails = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(15, 23, 42, 1))",
+            bgcolor: "rgba(0, 0, 0, 0.7)",
           },
         }}
       >
-        <Box
-          component="img"
-          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-          alt={movie.title}
+        <Container
+          maxWidth="xl"
           sx={{
-            width: "100%",
             height: "100%",
-            objectFit: "cover",
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+            zIndex: 1,
           }}
-        />
-      </Box>
-
-      {/* Content */}
-      <Container
-        maxWidth="xl"
-        sx={{
-          mt: { xs: -20, md: -40 },
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <Grid container spacing={4}>
-          {/* Poster */}
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: (theme) => theme.shadows[20],
-              }}
-            >
-              <CardMedia
+        >
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={3}>
+              <Box
                 component="img"
-                image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
                 sx={{
                   width: "100%",
-                  height: "auto",
-                  aspectRatio: "2/3",
+                  borderRadius: 2,
+                  boxShadow: "0 0 20px rgba(0,0,0,0.5)",
                 }}
               />
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <Typography variant="h2" gutterBottom color="white">
+                {movie.title}
+              </Typography>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}
+              >
+                <Rating
+                  value={movie.vote_average / 2}
+                  precision={0.5}
+                  readOnly
+                />
+                <Typography color="white">
+                  ({movie.vote_average.toFixed(1)}/10)
+                </Typography>
+                <Chip
+                  label={new Date(movie.release_date).getFullYear()}
+                  sx={{ bgcolor: "primary.main" }}
+                />
+                {movieStatus && (
+                  <Chip
+                    icon={<Theaters />}
+                    label={movieStatus}
+                    color={
+                      movieStatus === "Blockbuster"
+                        ? "success"
+                        : movieStatus === "Hit"
+                        ? "primary"
+                        : "error"
+                    }
+                  />
+                )}
+              </Box>
+              <Typography variant="body1" color="white" sx={{ mb: 3 }}>
+                {movie.overview}
+              </Typography>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                {movie.genres.map((genre) => (
+                  <Chip
+                    key={genre.id}
+                    label={genre.name}
+                    sx={{ bgcolor: "primary.main" }}
+                  />
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Details Section */}
+      <Container maxWidth="xl" sx={{ py: 8 }}>
+        <Grid container spacing={4}>
+          {/* Left Column */}
+          <Grid item xs={12} md={4}>
+            <Card sx={{ mb: 4 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Movie Info
+                </Typography>
+                <Stack spacing={2}>
+                  <Box>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Release Date
+                    </Typography>
+                    <Typography>{formatDate(movie.release_date)}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Runtime
+                    </Typography>
+                    <Typography>{formatRuntime(movie.runtime)}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Budget
+                    </Typography>
+                    <Typography>{formatCurrency(movie.budget)}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" color="text.secondary">
+                      Revenue
+                    </Typography>
+                    <Typography>{formatCurrency(movie.revenue)}</Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            {/* Watch Providers Card */}
+            {usProviders && (
+              <Card sx={{ mb: 4 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Where to Watch
+                  </Typography>
+                  {usProviders.flatrate && (
+                    <Box sx={{ mb: 3 }}>
+                      <Typography
+                        variant="subtitle2"
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        Stream
+                      </Typography>
+                      <Stack direction="row" spacing={1} flexWrap="wrap">
+                        {usProviders.flatrate.map((provider) => (
+                          <Tooltip
+                            key={provider.provider_id}
+                            title={provider.provider_name}
+                          >
+                            <Avatar
+                              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                              alt={provider.provider_name}
+                              sx={{ width: 40, height: 40 }}
+                            />
+                          </Tooltip>
+                        ))}
+                      </Stack>
+                    </Box>
+                  )}
+                  {usProviders.rent && (
+                    <Box sx={{ mb: 3 }}>
+                      <Typography
+                        variant="subtitle2"
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        Rent
+                      </Typography>
+                      <Stack direction="row" spacing={1} flexWrap="wrap">
+                        {usProviders.rent.map((provider) => (
+                          <Tooltip
+                            key={provider.provider_id}
+                            title={provider.provider_name}
+                          >
+                            <Avatar
+                              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                              alt={provider.provider_name}
+                              sx={{ width: 40, height: 40 }}
+                            />
+                          </Tooltip>
+                        ))}
+                      </Stack>
+                    </Box>
+                  )}
+                  {usProviders.buy && (
+                    <Box>
+                      <Typography
+                        variant="subtitle2"
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        Buy
+                      </Typography>
+                      <Stack direction="row" spacing={1} flexWrap="wrap">
+                        {usProviders.buy.map((provider) => (
+                          <Tooltip
+                            key={provider.provider_id}
+                            title={provider.provider_name}
+                          >
+                            <Avatar
+                              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                              alt={provider.provider_name}
+                              sx={{ width: 40, height: 40 }}
+                            />
+                          </Tooltip>
+                        ))}
+                      </Stack>
+                    </Box>
+                  )}
+                  {usProviders.link && (
+                    <Button
+                      href={usProviders.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="contained"
+                      fullWidth
+                      sx={{ mt: 3 }}
+                    >
+                      View All Watch Options
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Production Companies
+                </Typography>
+                <Stack spacing={2}>
+                  {movie.production_companies.map((company) => (
+                    <Box
+                      key={company.id}
+                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                    >
+                      {company.logo_path ? (
+                        <Avatar
+                          src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
+                          alt={company.name}
+                          variant="rounded"
+                          sx={{ width: 60, height: 60 }}
+                        />
+                      ) : (
+                        <Avatar
+                          variant="rounded"
+                          sx={{ width: 60, height: 60 }}
+                        >
+                          {company.name[0]}
+                        </Avatar>
+                      )}
+                      <Box>
+                        <Typography>{company.name}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {company.origin_country}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
             </Card>
           </Grid>
 
-          {/* Movie Info */}
-          <Grid item xs={12} md={9}>
-            <Typography
-              variant="h2"
-              gutterBottom
-              sx={{
-                color: "white",
-                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-                mb: 2,
-              }}
-            >
-              {movie.title}
-            </Typography>
-
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems="center"
-              sx={{ mb: 3 }}
-            >
-              <Rating value={movie.vote_average / 2} precision={0.5} readOnly />
-              <Typography color="text.secondary">
-                ({movie.vote_average.toFixed(1)}/10 •{" "}
-                {movie.vote_count.toLocaleString()} votes)
-              </Typography>
-            </Stack>
-
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ mb: 3, flexWrap: "wrap", gap: 1 }}
-            >
-              {movie.genres.map((genre) => (
-                <Chip
-                  key={genre.id}
-                  label={genre.name}
-                  sx={{
-                    bgcolor: "primary.main",
-                    color: "white",
-                  }}
-                />
-              ))}
-            </Stack>
-
-            <Typography
-              variant="body1"
-              sx={{
-                color: "text.secondary",
-                mb: 3,
-                fontSize: { xs: "1rem", sm: "1.1rem" },
-                maxWidth: "800px",
-                lineHeight: 1.8,
-              }}
-            >
-              {movie.overview}
-            </Typography>
-
-            <Divider sx={{ my: 4, borderColor: "rgba(255,255,255,0.1)" }} />
-
-            {/* Feature Cards */}
-            <Grid container spacing={3}>
-              {/* Additional Info Card */}
-              {/* Movie Info Card */}
-              <Grid item xs={12} md={6}>
+          {/* Right Column */}
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={4}>
+              {/* Cast Section */}
+              <Grid item xs={12}>
                 <Card>
                   <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 3,
-                      }}
-                    >
-                      <Typography variant="h6">Movie Info</Typography>
-                      <Button
-                        component={RouterLink}
-                        to="info"
-                        endIcon={<ArrowForward />}
-                        sx={{ color: "primary.main" }}
-                      >
-                        View Details
-                      </Button>
-                    </Box>
-                    <Stack spacing={2}>
-                      <Box>
-                        <Typography variant="subtitle2" color="text.secondary">
-                          Release Date
-                        </Typography>
-                        <Typography>
-                          {formatDate(movie.release_date)}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="subtitle2" color="text.secondary">
-                          Runtime
-                        </Typography>
-                        <Typography>{formatRuntime(movie.runtime)}</Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="subtitle2" color="text.secondary">
-                          Budget
-                        </Typography>
-                        <Typography>{formatCurrency(movie.budget)}</Typography>
-                      </Box>
-                      {movieStatus && (
-                        <Box>
-                          <Typography variant="subtitle2" color="text.secondary">
-                            Box Office Performance
-                          </Typography>
-                          <Chip
-                            icon={<Theaters />}
-                            label={movieStatus}
-                            color={
-                              movieStatus === "Blockbuster"
-                                ? "success"
-                                : movieStatus === "Hit"
-                                ? "primary"
-                                : "error"
-                            }
-                            sx={{ mt: 1 }}
-                          />
-                        </Box>
-                      )}
-                    </Stack>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* Watch Providers Card */}
-              {usProviders && (
-                <Grid item xs={12} md={6}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6" gutterBottom>
-                        Where to Watch
-                      </Typography>
-                      {usProviders.flatrate && (
-                        <Box sx={{ mb: 3 }}>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                            Stream
-                          </Typography>
-                          <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.flatrate.map((provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
-                                <Avatar
-                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
-                                  alt={provider.provider_name}
-                                  sx={{ width: 40, height: 40 }}
-                                />
-                              </Tooltip>
-                            ))}
-                          </Stack>
-                        </Box>
-                      )}
-                      {usProviders.rent && (
-                        <Box sx={{ mb: 3 }}>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                            Rent
-                          </Typography>
-                          <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.rent.map((provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
-                                <Avatar
-                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
-                                  alt={provider.provider_name}
-                                  sx={{ width: 40, height: 40 }}
-                                />
-                              </Tooltip>
-                            ))}
-                          </Stack>
-                        </Box>
-                      )}
-                      {usProviders.buy && (
-                        <Box>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                            Buy
-                          </Typography>
-                          <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.buy.map((provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
-                                <Avatar
-                                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
-                                  alt={provider.provider_name}
-                                  sx={{ width: 40, height: 40 }}
-                                />
-                              </Tooltip>
-                            ))}
-                          </Stack>
-                        </Box>
-                      )}
-                      {usProviders.link && (
-                        <Button
-                          href={usProviders.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          variant="contained"
-                          fullWidth
-                          sx={{ mt: 3 }}
-                        >
-                          View All Watch Options
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
-
-              {/* Production Companies Card */}
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 3,
-                      }}
-                    >
-                      <Typography variant="h6">Production Companies</Typography>
-                      <Button
-                        component={RouterLink}
-                        to="companies"
-                        endIcon={<ArrowForward />}
-                        sx={{ color: "primary.main" }}
-                      >
-                        View All
-                      </Button>
-                    </Box>
+                    <Typography variant="h6" gutterBottom>
+                      Cast
+                    </Typography>
                     <Grid container spacing={2}>
-                      {movie.production_companies.slice(0, 2).map((company) => (
-                        <Grid item xs={12} key={company.id}>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              gap: 2,
-                              alignItems: "center",
-                            }}
-                          >
-                            {company.logo_path ? (
-                              <Avatar
-                                src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
-                                variant="rounded"
-                                sx={{
-                                  width: 60,
-                                  height: 60,
-                                  bgcolor: "background.paper",
-                                }}
-                              />
-                            ) : (
-                              <Avatar
-                                variant="rounded"
-                                sx={{
-                                  width: 60,
-                                  height: 60,
-                                  bgcolor: "primary.main",
-                                }}
-                              >
-                                {company.name[0]}
-                              </Avatar>
-                            )}
-                            <Box>
-                              <Typography variant="subtitle2">
-                                {company.name}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                {company.origin_country}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* Cast Card */}
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 3,
-                      }}
-                    >
-                      <Typography variant="h6">Top Cast</Typography>
-                      <Button
-                        component={RouterLink}
-                        to="cast"
-                        endIcon={<ArrowForward />}
-                        sx={{ color: "primary.main" }}
-                      >
-                        View All
-                      </Button>
-                    </Box>
-                    <Grid container spacing={2}>
-                      {movie.credits?.cast?.slice(0, 4).map((person) => (
-                        <Grid item xs={12} sm={6} key={person.id}>
+                      {movie.credits?.cast?.slice(0, 6).map((person) => (
+                        <Grid item xs={12} sm={6} md={4} key={person.id}>
                           <Box sx={{ display: "flex", gap: 2 }}>
                             <Avatar
                               src={
@@ -488,99 +397,33 @@ const MovieDetails = () => {
                 </Card>
               </Grid>
 
-              {/* Media Card */}
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 3,
-                      }}
-                    >
-                      <Typography variant="h6">Media Gallery</Typography>
-                      <Button
-                        component={RouterLink}
-                        to="images"
-                        endIcon={<ArrowForward />}
-                        sx={{ color: "primary.main" }}
-                      >
-                        View All
-                      </Button>
-                    </Box>
-                    <Grid container spacing={2}>
-                      {movie.images?.backdrops
-                        ?.slice(0, 4)
-                        .map((image, index) => (
-                          <Grid item xs={6} key={image.file_path}>
-                            <Box
-                              sx={{
-                                position: "relative",
-                                paddingTop: "56.25%",
-                                borderRadius: 1,
-                                overflow: "hidden",
-                              }}
-                            >
-                              <CardMedia
-                                component="img"
-                                image={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-                                alt={`Movie backdrop ${index + 1}`}
-                                sx={{
-                                  position: "absolute",
-                                  top: 0,
-                                  left: 0,
-                                  width: "100%",
-                                  height: "100%",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            </Box>
-                          </Grid>
-                        ))}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* Reviews Card */}
+              {/* Reviews Section */}
               <Grid item xs={12}>
                 <Card>
                   <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 3,
-                      }}
-                    >
-                      <Typography variant="h6">Reviews</Typography>
-                      <Button
-                        component={RouterLink}
-                        to="reviews"
-                        endIcon={<ArrowForward />}
-                        sx={{ color: "primary.main" }}
-                      >
-                        View All
-                      </Button>
-                    </Box>
-                    <Grid container spacing={3}>
-                      {movie.reviews?.results?.slice(0, 2).map((review) => (
-                        <Grid item xs={12} md={6} key={review.id}>
-                          <Box sx={{ display: "flex", gap: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                      Reviews
+                    </Typography>
+                    {movie.reviews?.results?.length ? (
+                      movie.reviews.results.slice(0, 3).map((review) => (
+                        <Box key={review.id} sx={{ mb: 3 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 2,
+                              mb: 1,
+                            }}
+                          >
                             <Avatar
                               src={
                                 review.author_details.avatar_path
                                   ? `https://image.tmdb.org/t/p/w200${review.author_details.avatar_path}`
                                   : undefined
                               }
-                            >
-                              {review.author[0]}
-                            </Avatar>
-                            <Box sx={{ flex: 1 }}>
-                              <Typography variant="subtitle2" gutterBottom>
+                            />
+                            <Box>
+                              <Typography variant="subtitle2">
                                 {review.author}
                               </Typography>
                               {review.author_details.rating && (
@@ -589,23 +432,54 @@ const MovieDetails = () => {
                                   precision={0.5}
                                   size="small"
                                   readOnly
-                                  sx={{ mb: 1 }}
                                 />
                               )}
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                sx={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 3,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                }}
-                              >
-                                {review.content}
-                              </Typography>
                             </Box>
                           </Box>
+                          <Typography variant="body2" color="text.secondary">
+                            {review.content.slice(0, 200)}...
+                          </Typography>
+                        </Box>
+                      ))
+                    ) : (
+                      <Typography color="text.secondary">
+                        No reviews available
+                      </Typography>
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* Images Section */}
+              <Grid item xs={12}>
+                <Card
+                  component={Link}
+                  to={`/movie/${id}/images`}
+                  sx={{
+                    textDecoration: "none",
+                    transition: "transform 0.2s",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Images
+                    </Typography>
+                    <Grid container spacing={2}>
+                      {movie.images?.backdrops?.slice(0, 3).map((image) => (
+                        <Grid item xs={12} sm={4} key={image.file_path}>
+                          <CardMedia
+                            component="img"
+                            image={`https://image.tmdb.org/t/p/w500${image.file_path}`}
+                            alt="Movie backdrop"
+                            sx={{
+                              borderRadius: 1,
+                              height: 150,
+                              objectFit: "cover",
+                            }}
+                          />
                         </Grid>
                       ))}
                     </Grid>
