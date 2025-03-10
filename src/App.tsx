@@ -6,27 +6,27 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import theme from "./styles/theme";
+import theme from "./styles/theme.ts";
 import React from "react";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-
+import Navbar from "./components/Navbar.tsx";
+import Footer from "./components/Footer.tsx";
+// import MovieCard from "./components/MovieCard";
 // Lazy load pages
-const Home = React.lazy(() => import("./pages/Home"));
-const MovieDetails = React.lazy(() => import("./pages/MovieDetails"));
-const SearchResults = React.lazy(() => import("./pages/SearchResults"));
-const MovieImages = React.lazy(() => import("./pages/MovieImages"));
-const Movies = React.lazy(() => import("./pages/Movies"));
-const MovieCast = React.lazy(() => import("./pages/MovieCast"));
-const MovieReviews = React.lazy(() => import("./pages/MovieReviews"));
-const MovieTrailers = React.lazy(() => import("./pages/MovieTrailers"));
-const GenreMovies = React.lazy(() => import("./pages/GenreMovies"));
-const TopRatedMovies = React.lazy(() => import("./pages/TopRatedMovies"));
-const UpcomingMovies = React.lazy(() => import("./pages/UpcomingMovies"));
-const Categories = React.lazy(() => import("./pages/Categories"));
-const MovieInfo = React.lazy(() => import("./pages/MovieInfo"));
+const Home = React.lazy(() => import("./pages/Home.tsx"));
+const MovieDetails = React.lazy(() => import("./pages/MovieDetails.tsx"));
+const SearchResults = React.lazy(() => import("./pages/SearchResults.tsx"));
+const MovieImages = React.lazy(() => import("./pages/MovieImages.tsx"));
+const Movies = React.lazy(() => import("./pages/Movies.tsx"));
+const MovieCast = React.lazy(() => import("./pages/MovieCast.tsx"));
+const MovieReviews = React.lazy(() => import("./pages/MovieReviews.tsx"));
+const MovieTrailers = React.lazy(() => import("./pages/MovieTrailers.tsx"));
+const GenreMovies = React.lazy(() => import("./pages/GenreMovies.tsx"));
+const TopRatedMovies = React.lazy(() => import("./pages/TopRatedMovies.tsx"));
+const UpcomingMovies = React.lazy(() => import("./pages/UpcomingMovies.tsx"));
+const Categories = React.lazy(() => import("./pages/Categories.tsx"));
+const MovieInfo = React.lazy(() => import("./pages/MovieInfo.tsx"));
 const ProductionCompanies = React.lazy(
-  () => import("./pages/ProductionCompanies")
+  () => import("./pages/ProductionCompanies.tsx")
 );
 
 const queryClient = new QueryClient({
@@ -34,8 +34,8 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 30 * 60 * 1000, // 30 minutes
+      staleTime: 30 * 60 * 1000, // 30 minutes
+      gcTime: 30 * 60 * 1000, // Use gcTime instead of cacheTime
     },
   },
 });

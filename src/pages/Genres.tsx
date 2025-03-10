@@ -11,8 +11,9 @@ import {
   alpha,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getGenres } from "../services/movieApi";
+import { getGenres } from "../services/movieApi.ts";
 import { LocalMovies } from "@mui/icons-material";
+import type { Genre } from "../types/movie.ts";
 
 const genreColors = [
   "#FF6B6B",
@@ -89,7 +90,7 @@ const Genres = () => {
         </Typography>
 
         <Grid container spacing={3}>
-          {genres?.map((genre, index) => (
+          {genres?.map((genre: Genre, index: number) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={genre.id}>
               <Card
                 sx={{

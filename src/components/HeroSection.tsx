@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import SearchBar from "./SearchBar";
+import SearchBar from "./SearchBar.tsx";
 
 const HeroSection = () => {
   return (

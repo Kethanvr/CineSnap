@@ -12,8 +12,8 @@ import {
   Chip,
   Avatar,
 } from "@mui/material";
-import { getMovieDetails } from "../../services/movieApi";
-import { Movie } from "../../types/movie";
+import { getMovieDetails } from "../../services/movieApi.ts";
+import { Movie } from "../../types/movie.ts";
 
 const MovieDetails = () => {
   const { id } = useParams();

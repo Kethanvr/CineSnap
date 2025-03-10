@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardMedia,
   Typography,
   Box,
@@ -8,7 +7,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Movie } from "../types/movie";
+import type { Movie } from "../types/movie.ts";
 
 interface MovieCardProps {
   movie: Movie;

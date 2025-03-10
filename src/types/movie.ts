@@ -122,4 +122,6 @@ export interface MovieResponse {
   results: Movie[];
   total_pages: number;
   total_results: number;
+  hasNextPage: boolean;
+  genre_name?: string;
 }

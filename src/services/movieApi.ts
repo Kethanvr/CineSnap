@@ -1,6 +1,6 @@
 import axios from "axios";
-import type { Movie, MovieResponse, Genre } from "../types/movie";
-import type { TVShow, TVShowResponse } from "../types/tvshow";
+import type { Movie, MovieResponse, Genre } from "../types/movie.ts";
+import type { TVShow, TVShowResponse } from "../types/tvshow.ts";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";

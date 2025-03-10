@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Container, Grid, Typography, Box, Divider } from "@mui/material";
-import { getPopularMovies, getLatestMovies } from "../services/movieApi";
-import MovieCard from "../components/MovieCard";
-import HeroSection from "../components/HeroSection";
-import type { MovieResponse } from "../types/movie";
+import { getPopularMovies, getLatestMovies } from "../services/movieApi.ts";
+import MovieCard from "../components/MovieCard.tsx";
+import HeroSection from "../components/HeroSection.tsx";
+import type { MovieResponse } from "../types/movie.ts";
 
 const Home = () => {
   const { data: popularMovies, isLoading: isLoadingPopular } =

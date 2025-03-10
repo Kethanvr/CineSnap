@@ -1,5 +1,4 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { InfiniteData } from "@tanstack/react-query";
 import {
   Container,
   Typography,
@@ -15,11 +14,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { getLatestMovies } from "../services/movieApi";
+import { getLatestMovies } from "../services/movieApi.ts";
 import { useNavigate } from "react-router-dom";
-import type { Movie } from "../types/movie";
+import type { Movie } from "../types/movie.ts";
 import { CalendarToday } from "@mui/icons-material";
-import { useState } from "react";
 
 interface MovieResponse {
   results: Movie[];
@@ -32,25 +30,17 @@ const Movies = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery<
-      MovieResponse,
-      Error,
-      InfiniteData<MovieResponse>,
-      (string | number)[],
-      number
-    >({
-      queryKey: ["latest-movies", page],
-      queryFn: ({ pageParam }) => getLatestMovies(pageParam),
-      getNextPageParam: (lastPage: MovieResponse) =>
-        lastPage.hasNextPage ? page + 1 : undefined,
+    useInfiniteQuery<MovieResponse>({
+      queryKey: ["latest-movies"],
+      queryFn: ({ pageParam = 1 }) => getLatestMovies(pageParam as number),
+      getNextPageParam: (lastPage) =>
+        lastPage.hasNextPage ? lastPage.total_pages + 1 : undefined,
       initialPageParam: 1,
     });
 
   const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
     fetchNextPage();
   };
 

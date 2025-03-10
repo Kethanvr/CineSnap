@@ -19,7 +19,7 @@ import {
   Download as DownloadIcon,
   OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
-import { getMovieImages } from "../../services/movieApi";
+import { getMovieImages } from "../../services/movieApi.ts";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,6 +41,11 @@ const TabPanel = (props: TabPanelProps) => {
     </div>
   );
 };
+
+interface ImageType {
+  file_path: string;
+  // Add other image properties as needed
+}
 
 const MovieImages = () => {
   const { id } = useParams();
@@ -85,7 +90,7 @@ const MovieImages = () => {
 
       <TabPanel value={tabValue} index={0}>
         <Grid container spacing={3}>
-          {images?.backdrops?.map((image, index) => (
+          {images?.backdrops?.map((image: ImageType, index: number) => (
             <Grid item xs={12} md={6} key={index}>
               <Card>
                 <CardMedia
@@ -127,7 +132,7 @@ const MovieImages = () => {
 
       <TabPanel value={tabValue} index={1}>
         <Grid container spacing={3}>
-          {images?.posters?.map((image, index) => (
+          {images?.posters?.map((image: ImageType, index: number) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <Card>
                 <CardMedia
@@ -169,7 +174,7 @@ const MovieImages = () => {
 
       <TabPanel value={tabValue} index={2}>
         <Grid container spacing={3}>
-          {images?.logos?.map((image, index) => (
+          {images?.logos?.map((image: ImageType, index: number) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Card sx={{ bgcolor: "black" }}>
                 <CardMedia

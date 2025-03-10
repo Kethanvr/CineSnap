@@ -14,10 +14,6 @@ import {
   Chip,
   Divider,
   Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Tooltip,
 } from "@mui/material";
 import {
@@ -26,20 +22,19 @@ import {
   formatRuntime,
   getMovieWatchProviders,
   determineMovieSuccess,
-} from "../services/movieApi";
-import type { Movie } from "../types/movie";
+} from "../services/movieApi.ts";
+import type { Movie } from "../types/movie.ts";
 import {
-  Image,
-  Group,
-  PlayArrow,
-  Comment,
-  Info,
-  Business,
   ArrowForward,
-  LocalMovies,
   Theaters,
 } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
+
+interface Provider {
+  provider_id: number;
+  provider_name: string;
+  logo_path: string;
+}
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -297,7 +292,7 @@ const MovieDetails = () => {
                             Stream
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.flatrate.map((provider) => (
+                            {usProviders.flatrate.map((provider: Provider) => (
                               <Tooltip key={provider.provider_id} title={provider.provider_name}>
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
@@ -315,7 +310,7 @@ const MovieDetails = () => {
                             Rent
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.rent.map((provider) => (
+                            {usProviders.rent.map((provider: Provider) => (
                               <Tooltip key={provider.provider_id} title={provider.provider_name}>
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
@@ -333,7 +328,7 @@ const MovieDetails = () => {
                             Buy
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {usProviders.buy.map((provider) => (
+                            {usProviders.buy.map((provider: Provider) => (
                               <Tooltip key={provider.provider_id} title={provider.provider_name}>
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}

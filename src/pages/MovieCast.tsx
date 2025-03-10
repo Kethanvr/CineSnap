@@ -12,8 +12,8 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
-import { getMovieDetails } from "../services/movieApi";
-import type { Movie } from "../types/movie";
+import { getMovieDetails } from "../services/movieApi.ts";
+import type { Movie } from "../types/movie.ts";
 import { Group } from "@mui/icons-material";
 
 const MovieCast = () => {

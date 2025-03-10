@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import SearchBar from "./SearchBar.tsx";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useState } from "react";
 

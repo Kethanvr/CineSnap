@@ -1,4 +1,4 @@
-import type { Genre, Image, Cast, Crew, Review } from "./movie";
+import type { Genre, Image, Cast, Crew, Review } from "./movie.ts";
 
 export interface TVShow {
   id: number;

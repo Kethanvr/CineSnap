@@ -11,12 +11,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { getTopRatedMovies } from "../services/movieApi";
-import { useNavigate } from "react-router-dom";
-import type { Movie } from "../types/movie";
+import { getTopRatedMovies } from "../services/movieApi.ts";
+import type { Movie } from "../types/movie.ts";
 import { TrendingUp, Star } from "@mui/icons-material";
 import { useState } from "react";
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/MovieCard.tsx";
 
 interface MovieResponse {
   results: Movie[];
@@ -28,7 +27,6 @@ interface MovieResponse {
 const TopRatedMovies = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =

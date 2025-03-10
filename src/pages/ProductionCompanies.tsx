@@ -11,8 +11,8 @@ import {
   Stack,
   Grid,
 } from "@mui/material";
-import { getMovieDetails } from "../services/movieApi";
-import type { Movie } from "../types/movie";
+import { getMovieDetails } from "../services/movieApi.ts";
+import type { Movie } from "../types/movie.ts";
 import { Business } from "@mui/icons-material";
 
 const ProductionCompanies = () => {

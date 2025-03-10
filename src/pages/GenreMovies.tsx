@@ -20,10 +20,10 @@ import {
   useTheme,
   Chip,
 } from "@mui/material";
-import { getMoviesByGenre } from "../services/movieApi";
+import { getMoviesByGenre } from "../services/movieApi.ts";
 import { useNavigate } from "react-router-dom";
-import type { Movie } from "../types/movie";
-import { FilterList, Sort, TrendingUp, Add } from "@mui/icons-material";
+import type { Movie, MovieResponse } from "../types/movie.ts";
+import { FilterList, Sort, Add } from "@mui/icons-material";
 import { useState } from "react";
 
 const sortOptions = [
@@ -43,10 +43,15 @@ const GenreMovies = () => {
   const [displayCount, setDisplayCount] = useState(MOVIES_PER_PAGE);
   const [sortBy, setSortBy] = useState("popularity.desc");
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<MovieResponse>({
     queryKey: ["genre-movies", id, sortBy],
-    queryFn: () => getMoviesByGenre(id || "", { sort_by: sortBy }),
-    keepPreviousData: true,
+    queryFn: () =>
+      getMoviesByGenre(id || "", { sort_by: sortBy }).then((result) => ({
+        ...result,
+        page: 1,
+      })),
+    enabled: !!id,
+    placeholderData: undefined,
   });
 
   const handleLoadMore = () => {

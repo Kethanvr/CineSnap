@@ -13,12 +13,11 @@ import {
   Tab,
   IconButton,
   Tooltip,
-  useMediaQuery,
-  useTheme,
+  
   Button,
 } from "@mui/material";
-import { getMovieDetails } from "../services/movieApi";
-import type { Movie, Image } from "../types/movie";
+import { getMovieDetails } from "../services/movieApi.ts";
+import type { Movie, Image } from "../types/movie.ts";
 import {
   Collections,
   Download,
@@ -35,8 +34,6 @@ const IMAGES_PER_PAGE = 40;
 
 const MovieImages = () => {
   const { id } = useParams<{ id: string }>();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [activeTab, setActiveTab] = useState<ImageType>("backdrops");
   const [displayCount, setDisplayCount] = useState(IMAGES_PER_PAGE);
 

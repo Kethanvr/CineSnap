@@ -7,13 +7,12 @@ import {
   Card,
   CardContent,
   CardMedia,
-  useTheme,
   alpha,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getGenres } from "../services/movieApi";
+import { getGenres } from "../services/movieApi.ts";
 import { LocalMovies } from "@mui/icons-material";
-import type { Genre } from "../types/movie";
+import type { Genre } from "../types/movie.ts";
 
 // Genre background images from Unsplash
 const genreBackgrounds = {
@@ -63,7 +62,6 @@ const genreColors = [
 ];
 
 const Categories = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   const { data: genres, isLoading } = useQuery<Genre[]>({
     queryKey: ["genres"],

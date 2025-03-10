@@ -11,18 +11,14 @@ import {
   Stack,
   Skeleton,
   Divider,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
-import { getMovieDetails } from "../services/movieApi";
-import type { Movie, Review } from "../types/movie";
+import { getMovieDetails } from "../services/movieApi.ts";
+import type { Movie, Review } from "../types/movie.ts";
 import { Comment } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
 
 const MovieReviews = () => {
   const { id } = useParams<{ id: string }>();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { data: movie, isLoading } = useQuery<Movie>({
     queryKey: ["movie", id],

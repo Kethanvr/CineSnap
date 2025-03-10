@@ -10,8 +10,8 @@ import {
   CardMedia,
   Rating,
 } from "@mui/material";
-import { searchMovies } from "../../services/movieApi";
-import { MovieResponse } from "../../types/movie";
+import { searchMovies } from "../../services/movieApi.ts";
+import { MovieResponse } from "../../types/movie.ts";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
