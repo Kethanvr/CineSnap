@@ -41,10 +41,9 @@ const theme = createTheme({
       main: "#8b5cf6",
       light: "#a78bfa",
       dark: "#7c3aed",
-    },
-    background: {
-      default: "#0f172a",
-      paper: "#1e293b",
+    },    background: {
+      default: "#0a0f1e", 
+      paper: "#131b2e",
     },
     text: {
       primary: "#f8fafc",
@@ -140,7 +139,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(15, 23, 42, 0.8)",
+          backgroundColor: "rgba(10, 15, 30, 0.8)",
           backdropFilter: "blur(10px)",
           borderBottom: "1px solid rgba(148, 163, 184, 0.1)",
         },
@@ -169,7 +168,7 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#1e293b",
+          backgroundColor: "#131b2e",
           borderRadius: 16,
           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           "&:hover": {

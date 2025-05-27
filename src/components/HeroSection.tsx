@@ -18,9 +18,8 @@ const HeroSection = () => {
           top: 0,
           left: 0,
           right: 0,
-          bottom: 0,
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(15, 23, 42, 0.9))",
+          bottom: 0,          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(10, 15, 30, 0.95))",
         },
       }}
     >
