@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://cinesnap.kethanvr.me/</loc>
+    <priority>1.00</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://cinesnap.kethanvr.me/movies</loc>
+    <priority>0.90</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://cinesnap.kethanvr.me/genres</loc>
+    <priority>0.80</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://cinesnap.kethanvr.me/top-rated</loc>
+    <priority>0.80</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://cinesnap.kethanvr.me/upcoming</loc>
+    <priority>0.80</priority>
+    <changefreq>daily</changefreq>
+  </url>
+</urlset>

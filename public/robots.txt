@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cinesnap.kethanvr.me/sitemap.xml
