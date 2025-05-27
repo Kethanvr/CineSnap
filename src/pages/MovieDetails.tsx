@@ -31,7 +31,7 @@ import {
   Theaters,
 } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
-import { LoadingSpinner, ErrorState, BreadcrumbNav } from "../components/common/index.ts";
+import { LoadingSpinner, ErrorState, BreadcrumbNav, SEO } from "../components/common/index.ts";
 
 interface Provider {
   provider_id: number;
@@ -86,9 +86,15 @@ const MovieDetails = () => {
   }
 
   const movieStatus = movie ? determineMovieSuccess(movie) : null;
-  const usProviders = watchProviders?.US;
-  return (
+  const usProviders = watchProviders?.US;  return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
+      <SEO 
+        title={`${movie.title} (${new Date(movie.release_date).getFullYear()}) | CineSnap`}
+        description={movie.overview || `Watch ${movie.title} and discover more movies on CineSnap - your AI-powered movie discovery companion.`}
+        image={movie.backdrop_path ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}` : "https://cinesnap.kethanvr.me/og-image.jpg"}
+        url={`https://cinesnap.kethanvr.me/movie/${movie.id}`}
+        keywords={`${movie.title}, ${movie.genres?.map(g => g.name).join(', ')}, Movie, Film, CineSnap`}
+      />
       {/* Breadcrumb Navigation */}
       <Container maxWidth="xl" sx={{ pt: { xs: 2, sm: 3 } }}>
         <BreadcrumbNav 
