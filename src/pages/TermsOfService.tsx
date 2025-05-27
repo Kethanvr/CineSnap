@@ -95,8 +95,7 @@ const TermsOfService = () => {
         description="CineSnap Terms of Service - Read our terms and conditions for using the movie discovery platform."
         keywords="terms of service, terms and conditions, cinesnap terms, movie app terms"
       />
-      
-      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Container maxWidth="md" sx={{ py: { xs: 3, md: 4 }, minHeight: 'calc(100vh - 200px)' }}>
         <Paper
           elevation={0}
           sx={{
@@ -104,25 +103,41 @@ const TermsOfService = () => {
             borderRadius: 3,
             border: '1px solid',
             borderColor: 'divider',
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(10px)',
           }}
         >
           {/* Header */}
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
             <Typography
               variant="h2"
               component="h1"
               gutterBottom
               sx={{
                 fontWeight: 700,
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                 background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                mb: 2,
+                mb: 2,              }}
+            >
+              📋 Terms of Service
+            </Typography>
+            <Typography 
+              variant="h6" 
+              color="text.secondary"
+              sx={{ 
+                fontSize: { xs: '1rem', md: '1.25rem' },
+                mb: 2
               }}
             >
-              Terms of Service
+              Simple terms for a simple service
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography 
+              variant="body1" 
+              color="text.secondary"
+              sx={{ fontSize: { xs: '0.9rem', md: '1rem' } }}
+            >
               Last Updated: {new Date().toLocaleDateString('en-US', { 
                 year: 'numeric', 
                 month: 'long', 

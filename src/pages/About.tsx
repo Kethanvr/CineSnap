@@ -66,28 +66,29 @@ const About = () => {
         description="Learn about CineSnap and Kethan VR, the passionate developer behind this movie discovery platform."
         keywords="about cinesnap, kethan vr, movie app developer, web development"
       />
-      
-      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Container maxWidth="md" sx={{ py: { xs: 3, md: 4 }, minHeight: 'calc(100vh - 200px)' }}>
         <Paper
           elevation={0}
           sx={{
             p: { xs: 3, md: 6 },
             borderRadius: 3,
-            background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.02) 0%, rgba(156, 39, 176, 0.02) 100%)',
+            background: 'rgba(255, 255, 255, 0.02)',
             border: '1px solid',
             borderColor: 'divider',
+            backdropFilter: 'blur(10px)',
           }}
         >
           {/* Header Section */}
-          <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
             <Avatar
               sx={{
-                width: 120,
-                height: 120,
+                width: { xs: 100, md: 120 },
+                height: { xs: 100, md: 120 },
                 mx: 'auto',
                 mb: 3,
-                fontSize: '3rem',
+                fontSize: { xs: '2.5rem', md: '3rem' },
                 bgcolor: 'primary.main',
+                boxShadow: '0 8px 32px rgba(25, 118, 210, 0.3)',
               }}
             >
               KV
@@ -98,6 +99,7 @@ const About = () => {
               gutterBottom
               sx={{
                 fontWeight: 700,
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
                 background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -106,15 +108,26 @@ const About = () => {
             >
               🧠 About CineSnap
             </Typography>
-            <Typography variant="h6" color="text.secondary">
+            <Typography 
+              variant="h6" 
+              color="text.secondary"
+              sx={{ fontSize: { xs: '1rem', md: '1.25rem' } }}
+            >
               Where innovation meets purpose
             </Typography>
           </Box>
 
           {/* Main Content */}
-          <Stack spacing={4}>
+          <Stack spacing={{ xs: 3, md: 4 }}>
             <Box>
-              <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
+              <Typography 
+                variant="body1" 
+                paragraph 
+                sx={{ 
+                  fontSize: { xs: '1rem', md: '1.1rem' }, 
+                  lineHeight: 1.8 
+                }}
+              >
                 Welcome to <strong>CineSnap</strong> – where innovation meets purpose.
               </Typography>
               

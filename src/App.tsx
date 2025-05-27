@@ -50,13 +50,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />        <Router>
-          <ScrollToTop />
-          <Box
+          <ScrollToTop />          <Box
             sx={{
               minHeight: "100vh",
               display: "flex",
               flexDirection: "column",
               bgcolor: "background.default",
+              position: "relative",
             }}
           >
             <Navbar />
@@ -67,6 +67,7 @@ function App() {
                 pt: { xs: 7, sm: 8 },
                 display: "flex",
                 flexDirection: "column",
+                minHeight: "calc(100vh - 64px)", // Account for navbar height
               }}
             >
               <React.Suspense

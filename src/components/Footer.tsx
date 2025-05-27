@@ -50,7 +50,6 @@ const Footer = () => {
       ],
     },
   ];
-
   return (
     <Box
       component="footer"
@@ -58,21 +57,23 @@ const Footer = () => {
         bgcolor: "background.paper",
         borderTop: "1px solid",
         borderColor: "divider",
-        py: 6,
+        py: { xs: 4, md: 6 },
         mt: "auto",
+        width: "100%",
+        flexShrink: 0,
       }}
-    >
-      <Container maxWidth="xl">
-        <Grid container spacing={4}>
+    >      <Container maxWidth="xl" sx={{ px: { xs: 2, md: 3 } }}>
+        <Grid container spacing={{ xs: 3, md: 4 }}>
           {/* Logo and Description */}
           <Grid item xs={12} md={4}>
-            <Stack spacing={2}>
+            <Stack spacing={{ xs: 2, md: 2.5 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Movie sx={{ color: "primary.main", fontSize: "2rem" }} />
+                <Movie sx={{ color: "primary.main", fontSize: { xs: "1.75rem", md: "2rem" } }} />
                 <Typography
                   variant="h5"
                   sx={{
                     fontWeight: 700,
+                    fontSize: { xs: "1.3rem", md: "1.5rem" },
                     background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -80,7 +81,12 @@ const Footer = () => {
                 >
                   CineSnap
                 </Typography>
-              </Box>              <Typography variant="body2" color="text.secondary">
+              </Box>
+              <Typography 
+                variant="body2" 
+                color="text.secondary"
+                sx={{ lineHeight: 1.6, maxWidth: { md: "90%" } }}
+              >
                 Your ultimate movie discovery companion. Built with passion by 
                 Kethan VR to help you explore cinema like never before.
               </Typography>
@@ -91,15 +97,30 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   size="small"
                   aria-label="GitHub"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
                 >
                   <GitHub />
-                </IconButton>
-                <IconButton
+                </IconButton>                <IconButton
                   href="https://x.com/VrKethan"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
                   aria-label="X (Twitter)"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
                 >
                   <Twitter />
                 </IconButton>
@@ -109,6 +130,14 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   size="small"
                   aria-label="LinkedIn"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
                 >
                   <LinkedIn />
                 </IconButton>
@@ -118,6 +147,14 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   size="small"
                   aria-label="YouTube"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
                 >
                   <YouTube />
                 </IconButton>
@@ -127,23 +164,34 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   size="small"
                   aria-label="Threads"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "primary.main",
+                      color: "white",
+                      transform: "translateY(-2px)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
                 >
                   <Instagram />
                 </IconButton>
               </Stack>
             </Stack>
-          </Grid>
-
-          {/* Navigation Sections */}
+          </Grid>          {/* Navigation Sections */}
           {sections.map((section) => (
             <Grid item xs={6} sm={4} md={2} key={section.title}>
               <Typography
                 variant="subtitle1"
                 gutterBottom
-                sx={{ fontWeight: 600 }}
+                sx={{ 
+                  fontWeight: 600,
+                  fontSize: { xs: "0.95rem", md: "1rem" },
+                  mb: { xs: 1.5, md: 2 }
+                }}
               >
                 {section.title}
-              </Typography>              <Stack spacing={1}>
+              </Typography>
+              <Stack spacing={{ xs: 0.75, md: 1 }}>
                 {section.links.map((link) => (
                   <Link
                     key={link.text}
@@ -152,8 +200,12 @@ const Footer = () => {
                     underline="hover"
                     color="text.secondary"
                     sx={{
-                      "&:hover": { color: "primary.main" },
-                      transition: "color 0.2s",
+                      fontSize: { xs: "0.85rem", md: "0.875rem" },
+                      "&:hover": { 
+                        color: "primary.main",
+                        transform: "translateX(4px)"
+                      },
+                      transition: "all 0.2s ease",
                     }}
                   >
                     {link.text}
@@ -162,12 +214,20 @@ const Footer = () => {
               </Stack>
             </Grid>
           ))}
-        </Grid>        {/* Copyright */}
+        </Grid>
+
+        {/* Copyright */}
         <Typography
           variant="body2"
           color="text.secondary"
           align="center"
-          sx={{ mt: 8 }}
+          sx={{ 
+            mt: { xs: 6, md: 8 },
+            pt: { xs: 3, md: 4 },
+            borderTop: "1px solid",
+            borderColor: "divider",
+            fontSize: { xs: "0.8rem", md: "0.875rem" }
+          }}
         >
           © {new Date().getFullYear()} CineSnap. Built with ❤️ by{" "}
           <Link 
