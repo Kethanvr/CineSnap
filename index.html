@@ -1,15 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="en">  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/movie.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="CineSnap - Your ultimate movie discovery platform. Find the latest movies, reviews, cast information, and high-quality images."
-    />
+    
+    <!-- Basic SEO -->
+    <title>CineSnap | Discover Movies with AI</title>
+    <meta name="description" content="CineSnap is your AI-powered movie buddy. Discover, explore, and get recommendations instantly. Built by Kethan VR.">
+    <meta name="keywords" content="CineSnap, AI Movie Finder, Kethan VR, Movie Recommendations, Film Discovery App, React AI App, CineSnap Website, AI Entertainment Tools">
+    <meta name="author" content="Kethan VR">
     <meta name="theme-color" content="#1976d2" />
-    <title>CineSnap - Movie Discovery Platform</title>
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="CineSnap | AI Movie Explorer">
+    <meta property="og:description" content="CineSnap helps you explore movies like a pro using AI. Built with love by Kethan VR.">
+    <meta property="og:image" content="https://cinesnap.kethanvr.me/og-image.jpg">
+    <meta property="og:url" content="https://cinesnap.kethanvr.me">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CineSnap | AI Movie Explorer">
+    <meta name="twitter:description" content="Find your next favorite movie using CineSnap – AI-powered movie discovery app.">
+    <meta name="twitter:image" content="https://cinesnap.kethanvr.me/og-image.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://cinesnap.kethanvr.me/" />
     <!-- Primary Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
@@ -64,9 +80,34 @@
         }
         50% {
           opacity: 0.5;
-        }
-      }
+        }      }
     </style>
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "CineSnap",
+      "url": "https://cinesnap.kethanvr.me",
+      "applicationCategory": "EntertainmentApplication",
+      "creator": {
+        "@type": "Person",
+        "name": "Kethan VR",
+        "url": "https://kethanvr.me"
+      },
+      "description": "AI-powered movie recommendation app built by Kethan VR. Discover new films, get smart suggestions, and explore cinema like never before.",
+      "keywords": [
+        "CineSnap",
+        "AI Movie App",
+        "Movie Discovery",
+        "Kethan VR",
+        "Film Recommendations",
+        "React Movie App"
+      ],
+      "operatingSystem": "All"
+    }
+    </script>
   </head>
   <body>
     <div id="loader">
