@@ -1,79 +1,80 @@
 import { useQuery } from "@tanstack/react-query";
-import { Container, Grid, Typography, Box, Divider } from "@mui/material";
+import { Container, Grid, Typography, Box, Divider, useTheme, useMediaQuery } from "@mui/material";
 import { getPopularMovies, getLatestMovies } from "../services/movieApi.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import HeroSection from "../components/HeroSection.tsx";
+import { LoadingSpinner, ErrorState } from "../components/common/index.ts";
 import type { MovieResponse } from "../types/movie.ts";
 
 const Home = () => {
-  const { data: popularMovies, isLoading: isLoadingPopular } =
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  const { data: popularMovies, isLoading: isLoadingPopular, error: errorPopular } =
     useQuery<MovieResponse>({
       queryKey: ["popularMovies"],
       queryFn: () => getPopularMovies(),
     });
 
-  const { data: latestMovies, isLoading: isLoadingLatest } =
+  const { data: latestMovies, isLoading: isLoadingLatest, error: errorLatest } =
     useQuery<MovieResponse>({
       queryKey: ["latestMovies"],
       queryFn: () => getLatestMovies(),
     });
 
   if (isLoadingPopular || isLoadingLatest) {
+    return <LoadingSpinner size={48} />;
+  }
+  if (errorPopular || errorLatest) {
     return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          bgcolor: "background.default",
-        }}
-      >
-        <Typography>Loading...</Typography>
-      </Box>
+      <ErrorState 
+        message="Failed to load movies. Please try again." 
+        onRetry={() => window.location.reload()}
+        fullScreen
+      />
     );
   }
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
-      <HeroSection />
-
-      <Container maxWidth="xl" sx={{ py: 8 }}>
+      <HeroSection />      <Container maxWidth="xl" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            mb: 4,
+            mb: { xs: 3, sm: 4 },
             fontWeight: "bold",
-            fontSize: { xs: "1.75rem", md: "2.5rem" },
+            fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2.5rem" },
+            px: { xs: 1, sm: 0 },
           }}
         >
           Latest Releases
         </Typography>
-        <Grid container spacing={3} sx={{ mb: 8 }}>
-          {latestMovies?.results?.slice(0, 8).map((movie) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
+        <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 6, sm: 8 } }}>
+          {latestMovies?.results?.slice(0, isMobile ? 6 : 8).map((movie) => (
+            <Grid item xs={6} sm={6} md={4} lg={3} key={movie.id}>
               <MovieCard movie={movie} />
             </Grid>
           ))}
         </Grid>
 
-        <Divider sx={{ my: 8 }} />
+        <Divider sx={{ my: { xs: 6, sm: 8 } }} />
 
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            mb: 4,
+            mb: { xs: 3, sm: 4 },
             fontWeight: "bold",
-            fontSize: { xs: "1.75rem", md: "2.5rem" },
+            fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2.5rem" },
+            px: { xs: 1, sm: 0 },
           }}
         >
           Popular Movies
         </Typography>
-        <Grid container spacing={3}>
-          {popularMovies?.results?.map((movie) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
+        <Grid container spacing={{ xs: 2, sm: 3 }}>
+          {popularMovies?.results?.slice(0, isMobile ? 6 : 12).map((movie) => (
+            <Grid item xs={6} sm={6} md={4} lg={3} key={movie.id}>
               <MovieCard movie={movie} />
             </Grid>
           ))}

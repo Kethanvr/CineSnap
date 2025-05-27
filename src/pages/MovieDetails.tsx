@@ -15,6 +15,8 @@ import {
   Divider,
   Avatar,
   Tooltip,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   getMovieDetails,
@@ -29,6 +31,7 @@ import {
   Theaters,
 } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
+import { LoadingSpinner, ErrorState, BreadcrumbNav } from "../components/common/index.ts";
 
 interface Provider {
   provider_id: number;
@@ -38,8 +41,10 @@ interface Provider {
 
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { data: movie, isLoading: isLoadingMovie } = useQuery<Movie>({
+  const { data: movie, isLoading: isLoadingMovie, error: movieError } = useQuery<Movie>({
     queryKey: ["movie", id],
     queryFn: () => getMovieDetails(id || ""),
     enabled: !!id,
@@ -54,17 +59,17 @@ const MovieDetails = () => {
   const isLoading = isLoadingMovie || isLoadingProviders;
 
   if (isLoading) {
+    return <LoadingSpinner size={48} />;
+  }
+
+  if (movieError || !movie) {
     return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography>Loading...</Typography>
-      </Box>
+      <ErrorState 
+        title="Movie Not Found"
+        message="The movie you're looking for could not be found." 
+        onRetry={() => window.location.reload()}
+        fullScreen
+      />
     );
   }
 
@@ -82,14 +87,24 @@ const MovieDetails = () => {
 
   const movieStatus = movie ? determineMovieSuccess(movie) : null;
   const usProviders = watchProviders?.US;
-
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
+      {/* Breadcrumb Navigation */}
+      <Container maxWidth="xl" sx={{ pt: { xs: 2, sm: 3 } }}>
+        <BreadcrumbNav 
+          items={[
+            { label: 'Home', path: '/' },
+            { label: 'Movies', path: '/movies' },
+            { label: movie.title }
+          ]}
+        />
+      </Container>
+
       {/* Backdrop */}
       <Box
         sx={{
           position: "relative",
-          height: { xs: "300px", md: "600px" },
+          height: { xs: "250px", sm: "350px", md: "600px" },
           width: "100%",
           overflow: "hidden",
           "&::before": {
@@ -114,25 +129,26 @@ const MovieDetails = () => {
             objectFit: "cover",
           }}
         />
-      </Box>
-
-      {/* Content */}
+      </Box>      {/* Content */}
       <Container
         maxWidth="xl"
         sx={{
-          mt: { xs: -20, md: -40 },
+          mt: { xs: -15, sm: -20, md: -40 },
           position: "relative",
           zIndex: 1,
+          px: { xs: 2, sm: 3 },
         }}
       >
-        <Grid container spacing={4}>
+        <Grid container spacing={{ xs: 3, md: 4 }}>
           {/* Poster */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={4} md={3}>
             <Card
               sx={{
                 borderRadius: 2,
                 overflow: "hidden",
                 boxShadow: (theme) => theme.shadows[20],
+                mx: { xs: 'auto', sm: 0 },
+                maxWidth: { xs: 250, sm: '100%' },
               }}
             >
               <CardMedia
@@ -149,42 +165,51 @@ const MovieDetails = () => {
           </Grid>
 
           {/* Movie Info */}
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} sm={8} md={9}>
             <Typography
               variant="h2"
               gutterBottom
               sx={{
                 color: "white",
                 textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-                mb: 2,
+                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem", lg: "3rem" },
+                mb: { xs: 1, sm: 2 },
+                textAlign: { xs: 'center', sm: 'left' },
               }}
             >
               {movie.title}
-            </Typography>
-
-            <Stack
-              direction="row"
+            </Typography>            <Stack
+              direction={{ xs: "column", sm: "row" }}
               spacing={2}
-              alignItems="center"
+              alignItems={{ xs: "center", sm: "flex-start" }}
               sx={{ mb: 3 }}
             >
-              <Rating value={movie.vote_average / 2} precision={0.5} readOnly />
-              <Typography color="text.secondary">
-                ({movie.vote_average.toFixed(1)}/10 •{" "}
-                {movie.vote_count.toLocaleString()} votes)
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Rating value={movie.vote_average / 2} precision={0.5} readOnly size="small" />
+                <Typography color="text.secondary" variant="body2">
+                  {movie.vote_average.toFixed(1)}/10
+                </Typography>
+              </Box>
+              <Typography color="text.secondary" variant="body2">
+                {movie.vote_count.toLocaleString()} votes
               </Typography>
             </Stack>
 
             <Stack
               direction="row"
               spacing={1}
-              sx={{ mb: 3, flexWrap: "wrap", gap: 1 }}
+              sx={{ 
+                mb: 3, 
+                flexWrap: "wrap", 
+                gap: 1,
+                justifyContent: { xs: 'center', sm: 'flex-start' }
+              }}
             >
-              {movie.genres.map((genre) => (
+              {movie.genres.slice(0, isMobile ? 3 : movie.genres.length).map((genre) => (
                 <Chip
                   key={genre.id}
                   label={genre.name}
+                  size={isMobile ? "small" : "medium"}
                   sx={{
                     bgcolor: "primary.main",
                     color: "white",
@@ -198,36 +223,42 @@ const MovieDetails = () => {
               sx={{
                 color: "text.secondary",
                 mb: 3,
-                fontSize: { xs: "1rem", sm: "1.1rem" },
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
                 maxWidth: "800px",
-                lineHeight: 1.8,
+                lineHeight: 1.7,
+                textAlign: { xs: 'center', sm: 'left' },
               }}
             >
               {movie.overview}
             </Typography>
 
-            <Divider sx={{ my: 4, borderColor: "rgba(255,255,255,0.1)" }} />
+            <Divider sx={{ my: { xs: 3, md: 4 }, borderColor: "rgba(255,255,255,0.1)" }} />
 
             {/* Feature Cards */}
-            <Grid container spacing={3}>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
               {/* Additional Info Card */}
               {/* Movie Info Card */}
               <Grid item xs={12} md={6}>
                 <Card>
-                  <CardContent>
+                  <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
                     <Box
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        mb: 3,
+                        mb: { xs: 2, sm: 3 },
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: { xs: 1, sm: 0 }
                       }}
                     >
-                      <Typography variant="h6">Movie Info</Typography>
+                      <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>
+                        Movie Info
+                      </Typography>
                       <Button
                         component={RouterLink}
                         to="info"
                         endIcon={<ArrowForward />}
+                        size={isMobile ? "small" : "medium"}
                         sx={{ color: "primary.main" }}
                       >
                         View Details

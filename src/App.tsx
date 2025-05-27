@@ -10,6 +10,7 @@ import theme from "./styles/theme.ts";
 import React from "react";
 import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
+import { ScrollToTop } from "./components/common/index.ts";
 // import MovieCard from "./components/MovieCard";
 // Lazy load pages
 const Home = React.lazy(() => import("./pages/Home.tsx"));
@@ -44,8 +45,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
+        <CssBaseline />        <Router>
+          <ScrollToTop />
           <Box
             sx={{
               minHeight: "100vh",
