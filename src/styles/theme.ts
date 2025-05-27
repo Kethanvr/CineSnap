@@ -37,11 +37,10 @@ const theme = createTheme({
       main: "#6366f1",
       light: "#818cf8",
       dark: "#4f46e5",
-    },
-    secondary: {
-      main: "#10b981",
-      light: "#34d399",
-      dark: "#059669",
+    },    secondary: {
+      main: "#8b5cf6",
+      light: "#a78bfa",
+      dark: "#7c3aed",
     },
     background: {
       default: "#0f172a",
@@ -58,7 +57,7 @@ const theme = createTheme({
       main: "#f59e0b",
     },
     success: {
-      main: "#10b981",
+      main: "#3b82f6",
     },
     info: {
       main: "#3b82f6",

@@ -19,7 +19,7 @@ const genreColors = [
   "#FF6B6B",
   "#4ECDC4",
   "#45B7D1",
-  "#96CEB4",
+  "#8b5cf6", // Purple (replaced green)
   "#FFEEAD",
   "#D4A5A5",
   "#9B59B6",
@@ -27,12 +27,12 @@ const genreColors = [
   "#1ABC9C",
   "#F1C40F",
   "#E74C3C",
-  "#2ECC71",
+  "#6366f1", // Indigo (replaced green)
   "#E67E22",
   "#95A5A6",
   "#34495E",
   "#16A085",
-  "#27AE60",
+  "#7c3aed", // Violet (replaced dark green)
   "#2980B9",
   "#8E44AD",
   "#F39C12",

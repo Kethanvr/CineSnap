@@ -42,7 +42,7 @@ const genreColors = [
   "#FF6B6B", // Red
   "#4ECDC4", // Teal
   "#45B7D1", // Light Blue
-  "#96CEB4", // Sage Green
+  "#8b5cf6", // Purple (replaced green)
   "#FFEEAD", // Light Yellow
   "#D4A5A5", // Rose
   "#9B59B6", // Purple
@@ -50,12 +50,12 @@ const genreColors = [
   "#1ABC9C", // Turquoise
   "#F1C40F", // Yellow
   "#E74C3C", // Dark Red
-  "#2ECC71", // Green
+  "#6366f1", // Indigo (replaced green)
   "#E67E22", // Orange
   "#95A5A6", // Gray
   "#34495E", // Navy
   "#16A085", // Dark Turquoise
-  "#27AE60", // Dark Green
+  "#7c3aed", // Violet (replaced dark green)
   "#2980B9", // Dark Blue
   "#8E44AD", // Dark Purple
   "#F39C12", // Dark Orange
