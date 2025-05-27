@@ -13,7 +13,6 @@ import {
   Twitter,
   LinkedIn,
   Instagram,
-  Movie,
   YouTube,
 } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
@@ -65,10 +64,17 @@ const Footer = () => {
     >      <Container maxWidth="xl" sx={{ px: { xs: 2, md: 3 } }}>
         <Grid container spacing={{ xs: 3, md: 4 }}>
           {/* Logo and Description */}
-          <Grid item xs={12} md={4}>
-            <Stack spacing={{ xs: 2, md: 2.5 }}>
+          <Grid item xs={12} md={4}>            <Stack spacing={{ xs: 2, md: 2.5 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Movie sx={{ color: "primary.main", fontSize: { xs: "1.75rem", md: "2rem" } }} />
+                <img 
+                  src="/logo.png" 
+                  alt="CineSnap Logo" 
+                  style={{ 
+                    height: "2rem", 
+                    width: "auto",
+                    filter: `hue-rotate(${theme.palette.mode === 'dark' ? '0deg' : '0deg'})` 
+                  }} 
+                />
                 <Typography
                   variant="h5"
                   sx={{
