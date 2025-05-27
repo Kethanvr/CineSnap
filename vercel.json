@@ -5,15 +5,10 @@
       "destination": "/index.html"
     }
   ],
-  "buildCommand": "./build.sh",
+  "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps --force",
   "outputDirectory": "dist",
   "framework": "vite",
-  "functions": {
-    "app/api/**.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
     "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
     "NPM_CONFIG_FORCE": "true"
