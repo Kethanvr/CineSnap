@@ -14,6 +14,7 @@ import {
   LinkedIn,
   Instagram,
   Movie,
+  YouTube,
 } from "@mui/icons-material";
 
 const Footer = () => {
@@ -78,42 +79,53 @@ const Footer = () => {
                 >
                   CineSnap
                 </Typography>
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                Your ultimate destination for movie discovery. Find the latest
-                releases, reviews, and high-quality movie content all in one
-                place.
+              </Box>              <Typography variant="body2" color="text.secondary">
+                Your AI-powered movie discovery companion. Built with passion by 
+                Kethan VR to help you explore cinema like never before.
               </Typography>
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} className="social-links">
                 <IconButton
-                  href="https://github.com"
+                  href="https://github.com/Kethanvr"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
+                  aria-label="GitHub"
                 >
                   <GitHub />
                 </IconButton>
                 <IconButton
-                  href="https://twitter.com"
+                  href="https://x.com/VrKethan"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
+                  aria-label="X (Twitter)"
                 >
                   <Twitter />
                 </IconButton>
                 <IconButton
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/kethan-vr-433ab532b/"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
+                  aria-label="LinkedIn"
                 >
                   <LinkedIn />
                 </IconButton>
                 <IconButton
-                  href="https://instagram.com"
+                  href="https://www.youtube.com/@kethanvr"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
+                  aria-label="YouTube"
+                >
+                  <YouTube />
+                </IconButton>
+                <IconButton
+                  href="https://www.threads.net/@kethan_vr_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="small"
+                  aria-label="Threads"
                 >
                   <Instagram />
                 </IconButton>
@@ -178,16 +190,24 @@ const Footer = () => {
               />
             </Link>
           </Grid>
-        </Grid>
-
-        {/* Copyright */}
+        </Grid>        {/* Copyright */}
         <Typography
           variant="body2"
           color="text.secondary"
           align="center"
           sx={{ mt: 8 }}
         >
-          © {new Date().getFullYear()} CineSnap. All rights reserved.
+          © {new Date().getFullYear()} CineSnap. Built with ❤️ by{" "}
+          <Link 
+            href="https://github.com/Kethanvr" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            color="primary"
+            underline="hover"
+          >
+            Kethan VR
+          </Link>
+          . All rights reserved.
         </Typography>
       </Container>
     </Box>

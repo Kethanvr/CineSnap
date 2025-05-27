@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Box, Divider, useTheme, useMediaQuery } fr
 import { getPopularMovies, getLatestMovies } from "../services/movieApi.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import HeroSection from "../components/HeroSection.tsx";
-import { LoadingSpinner, ErrorState } from "../components/common/index.ts";
+import { LoadingSpinner, ErrorState, SEO } from "../components/common/index.ts";
 import type { MovieResponse } from "../types/movie.ts";
 
 const Home = () => {
@@ -34,10 +34,15 @@ const Home = () => {
       />
     );
   }
-
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
-      <HeroSection />      <Container maxWidth="xl" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
+      <SEO 
+        title="CineSnap | Discover Movies with AI"
+        description="Discover, explore, and get movie recommendations instantly with CineSnap - your AI-powered movie discovery companion. Built by Kethan VR."
+        url="https://cinesnap.kethanvr.me"
+        keywords="CineSnap, AI Movie Finder, Movie Discovery, Popular Movies, Latest Movies, Kethan VR"
+      />
+      <HeroSection /><Container maxWidth="xl" sx={{ py: { xs: 4, sm: 6, md: 8 } }}>
         <Typography
           variant="h4"
           gutterBottom
