@@ -33,11 +33,14 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"
-  },
-  "overrides": {
+  },  "overrides": {
     "react-helmet-async": {
       "react": "$react",
       "react-dom": "$react-dom"
     }
+  },
+  "resolutions": {
+    "react-helmet-async/react": "$react",
+    "react-helmet-async/react-dom": "$react-dom"
   }
 }
