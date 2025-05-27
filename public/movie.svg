@@ -1,0 +1,17 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="6" fill="#1976d2"/>
+  <path d="M8 12V24C8 24.5523 8.44772 25 9 25H23C23.5523 25 24 24.5523 24 24V12H8Z" fill="white"/>
+  <path d="M6 8C6 7.44772 6.44772 7 7 7H25C25.5523 7 26 7.44772 26 8V10H6V8Z" fill="white"/>
+  <rect x="9" y="13" width="2" height="2" fill="#1976d2"/>
+  <rect x="12" y="13" width="2" height="2" fill="#1976d2"/>
+  <rect x="15" y="13" width="2" height="2" fill="#1976d2"/>
+  <rect x="18" y="13" width="2" height="2" fill="#1976d2"/>
+  <rect x="21" y="13" width="2" height="2" fill="#1976d2"/>
+  <rect x="9" y="16" width="2" height="2" fill="#1976d2"/>
+  <rect x="12" y="16" width="2" height="2" fill="#1976d2"/>
+  <rect x="15" y="16" width="2" height="2" fill="#1976d2"/>
+  <rect x="18" y="16" width="2" height="2" fill="#1976d2"/>
+  <rect x="21" y="16" width="2" height="2" fill="#1976d2"/>
+  <circle cx="16" cy="20" r="2" fill="#1976d2"/>
+  <path d="M14 20L15 21L18 18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

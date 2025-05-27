@@ -16,6 +16,7 @@ import {
   Movie,
   YouTube,
 } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   const theme = useTheme();
@@ -80,7 +81,7 @@ const Footer = () => {
                   CineSnap
                 </Typography>
               </Box>              <Typography variant="body2" color="text.secondary">
-                Your AI-powered movie discovery companion. Built with passion by 
+                Your ultimate movie discovery companion. Built with passion by 
                 Kethan VR to help you explore cinema like never before.
               </Typography>
               <Stack direction="row" spacing={1} className="social-links">
@@ -142,12 +143,12 @@ const Footer = () => {
                 sx={{ fontWeight: 600 }}
               >
                 {section.title}
-              </Typography>
-              <Stack spacing={1}>
+              </Typography>              <Stack spacing={1}>
                 {section.links.map((link) => (
                   <Link
                     key={link.text}
-                    href={link.href}
+                    component={RouterLink}
+                    to={link.href}
                     underline="hover"
                     color="text.secondary"
                     sx={{
@@ -161,35 +162,6 @@ const Footer = () => {
               </Stack>
             </Grid>
           ))}
-
-          {/* Newsletter */}
-          <Grid item xs={12} md={2}>
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              sx={{ fontWeight: 600 }}
-            >
-              Powered By
-            </Typography>
-            <Link
-              href="https://www.themoviedb.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              sx={{
-                display: "block",
-                mt: 1,
-                img: {
-                  width: "100px",
-                  height: "auto",
-                },
-              }}
-            >
-              <img
-                src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
-                alt="TMDB"
-              />
-            </Link>
-          </Grid>
         </Grid>        {/* Copyright */}
         <Typography
           variant="body2"

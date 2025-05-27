@@ -29,6 +29,10 @@ const MovieInfo = React.lazy(() => import("./pages/MovieInfo.tsx"));
 const ProductionCompanies = React.lazy(
   () => import("./pages/ProductionCompanies.tsx")
 );
+const About = React.lazy(() => import("./pages/About.tsx"));
+const Contact = React.lazy(() => import("./pages/Contact.tsx"));
+const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy.tsx"));
+const TermsOfService = React.lazy(() => import("./pages/TermsOfService.tsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,8 +82,7 @@ function App() {
                     <CircularProgress size={48} thickness={4} />
                   </Box>
                 }
-              >
-                <Routes>
+              >                <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/movies" element={<Movies />} />
                   <Route
@@ -103,6 +106,10 @@ function App() {
                     path="/movie/:id/companies"
                     element={<ProductionCompanies />}
                   />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<TermsOfService />} />
                 </Routes>
               </React.Suspense>
             </Box>
