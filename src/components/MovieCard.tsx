@@ -187,8 +187,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
             bottom: 0,
             left: 0,
             right: 0,
-            bgcolor: "rgba(0, 0, 0, 0.9)",
-            backdropFilter: "blur(8px)",
+            // Removed overlay background and blur
             p: 2,
             transform: "translateY(100%)",
             transition: "transform 0.3s ease-in-out",

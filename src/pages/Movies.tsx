@@ -99,6 +99,7 @@ const Movies = () => {
                   height: "100%",
                   cursor: "pointer",
                   bgcolor: "background.paper",
+                  // Overlay removed
                 }}
                 onClick={() => navigate(`/movie/${movie.id}`)}
               >

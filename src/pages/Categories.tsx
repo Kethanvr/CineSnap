@@ -154,13 +154,7 @@ const Categories = () => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: `linear-gradient(135deg, ${alpha(
-                      genreColors[index % genreColors.length],
-                      0.8
-                    )}, ${alpha(
-                      genreColors[index % genreColors.length],
-                      0.6
-                    )})`,
+                    background: "none",
                     transition: "background 0.3s ease-in-out",
                   }}
                 />

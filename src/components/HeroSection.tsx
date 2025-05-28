@@ -12,15 +12,7 @@ const HeroSection = () => {
           "url('https://image.tmdb.org/t/p/original/628Dep6AxEtDxjZoGP78TsOxYbK.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(10, 15, 30, 0.95))",
-        },
+        // Overlay removed
       }}
     >
       <Container

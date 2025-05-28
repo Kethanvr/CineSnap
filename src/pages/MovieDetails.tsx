@@ -113,15 +113,6 @@ const MovieDetails = () => {
           height: { xs: "250px", sm: "350px", md: "600px" },
           width: "100%",
           overflow: "hidden",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(10, 15, 30, 1))",
-          },
         }}
       >
         <Box
