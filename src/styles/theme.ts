@@ -37,12 +37,14 @@ const theme = createTheme({
       main: "#6366f1",
       light: "#818cf8",
       dark: "#4f46e5",
-    },    secondary: {
+    },
+    secondary: {
       main: "#8b5cf6",
       light: "#a78bfa",
       dark: "#7c3aed",
-    },    background: {
-      default: "#0a0f1e", 
+    },
+    background: {
+      default: "#0a0f1e",
       paper: "#131b2e",
     },
     text: {
@@ -207,18 +209,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: "none",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background:
-              "linear-gradient(45deg, rgba(99, 102, 241, 0.05), rgba(16, 185, 129, 0.05))",
-            borderRadius: "inherit",
-            pointerEvents: "none",
-          },
         },
       },
     },
