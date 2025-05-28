@@ -9,8 +9,16 @@ import {
   List,
   ListItem,
   ListItemText,
+  Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/clerk-react";
 import SearchBar from "./SearchBar.tsx";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useState } from "react";
@@ -44,6 +52,38 @@ const Navbar = () => {
       ))}
       <ListItem>
         <SearchBar />
+      </ListItem>
+      <ListItem>
+        <SignedOut>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              width: "100%",
+            }}
+          >
+            <SignInButton mode="modal">
+              <Button variant="outlined" size="small" fullWidth>
+                Sign In
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button variant="contained" size="small" fullWidth>
+                Sign Up
+              </Button>
+            </SignUpButton>
+          </Box>
+        </SignedOut>
+        <SignedIn>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "width: 32px; height: 32px;",
+              },
+            }}
+          />
+        </SignedIn>
       </ListItem>
     </List>
   );
@@ -114,6 +154,51 @@ const Navbar = () => {
               </Typography>
             ))}
             <SearchBar />
+
+            {/* Authentication Section */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      color: "white",
+                      borderColor: "white",
+                      "&:hover": {
+                        borderColor: "rgba(255, 255, 255, 0.8)",
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      },
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.3)",
+                      },
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "width: 40px; height: 40px;",
+                    },
+                  }}
+                />
+              </SignedIn>
+            </Box>
           </Box>
         </Toolbar>
       </Container>
