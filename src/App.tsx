@@ -7,10 +7,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import theme from "./styles/theme.ts";
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
+import CineSnapAI from "./components/CineSnapAI.tsx";
+import AIFloatingButton from "./components/AIFloatingButton.tsx";
 import { ScrollToTop } from "./components/common/index.ts";
+import type { UserContext } from "./services/cineSnapAi.ts";
 // import MovieCard from "./components/MovieCard";
 // Lazy load pages
 const Home = React.lazy(() => import("./pages/Home.tsx"));
@@ -46,11 +49,27 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const [isAIOpen, setIsAIOpen] = useState(false);
+  const [aiContext, setAiContext] = useState<Partial<UserContext>>({});
+
+  // Function to open AI with specific context
+  const openAIWithContext = (context?: Partial<UserContext>) => {
+    if (context) {
+      setAiContext((prev) => ({ ...prev, ...context }));
+    }
+    setIsAIOpen(true);
+  };
+
+  // Determine if we should show floating button based on current route
+  const shouldShowFloatingButton = true; // Can be enhanced with route-based logic
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />        <Router>
-          <ScrollToTop />          <Box
+        <CssBaseline />{" "}
+        <Router>
+          <ScrollToTop />{" "}
+          <Box
             sx={{
               minHeight: "100vh",
               display: "flex",
@@ -59,7 +78,7 @@ function App() {
               position: "relative",
             }}
           >
-            <Navbar />
+            <Navbar onOpenAI={openAIWithContext} />
             <Box
               component="main"
               sx={{
@@ -83,8 +102,13 @@ function App() {
                     <CircularProgress size={48} thickness={4} />
                   </Box>
                 }
-              >                <Routes>
-                  <Route path="/" element={<Home />} />
+              >
+                {" "}
+                <Routes>
+                  <Route
+                    path="/"
+                    element={<Home onOpenAI={openAIWithContext} />}
+                  />
                   <Route path="/movies" element={<Movies />} />
                   <Route
                     path="/movies/top-rated"
@@ -114,6 +138,22 @@ function App() {
                 </Routes>
               </React.Suspense>
             </Box>
+
+            {/* AI Floating Button */}
+            {shouldShowFloatingButton && (
+              <AIFloatingButton
+                onClick={() => setIsAIOpen(true)}
+                hasNewSuggestions={false}
+              />
+            )}
+
+            {/* CineSnap AI Chat Interface */}
+            <CineSnapAI
+              isOpen={isAIOpen}
+              onClose={() => setIsAIOpen(false)}
+              initialContext={aiContext}
+            />
+
             <Footer />
           </Box>
         </Router>
