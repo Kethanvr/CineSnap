@@ -198,7 +198,6 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
         setInputText(""); // Clear input when starting voice recognition
         listen({
           interimResults: false,
-          continuous: false,
           lang: "en-US",
         });
       } else {
