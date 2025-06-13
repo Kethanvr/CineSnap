@@ -10,6 +10,7 @@ import {
   ListItem,
   ListItemText,
   Button,
+  Tooltip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import {
@@ -20,10 +21,15 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import SearchBar from "./SearchBar.tsx";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { Menu as MenuIcon, Psychology as AIIcon } from "@mui/icons-material";
 import { useState } from "react";
+import type { UserContext } from "../services/cineSnapAi.ts";
 
-const Navbar = () => {
+interface NavbarProps {
+  onOpenAI?: (context?: Partial<UserContext>) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenAI }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -52,6 +58,27 @@ const Navbar = () => {
       ))}
       <ListItem>
         <SearchBar />
+      </ListItem>
+      <ListItem>
+        <Button
+          onClick={() => {
+            onOpenAI?.();
+            handleDrawerToggle();
+          }}
+          startIcon={<AIIcon />}
+          variant="outlined"
+          fullWidth
+          sx={{
+            borderColor: "primary.main",
+            color: "primary.main",
+            "&:hover": {
+              backgroundColor: "primary.main",
+              color: "white",
+            },
+          }}
+        >
+          Ask CineSnap AI
+        </Button>
       </ListItem>
       <ListItem>
         <SignedOut>
@@ -154,6 +181,24 @@ const Navbar = () => {
               </Typography>
             ))}
             <SearchBar />
+
+            {/* CineSnap AI Button */}
+            <Tooltip title="Ask CineSnap AI for recommendations">
+              <IconButton
+                onClick={() => onOpenAI?.()}
+                sx={{
+                  color: "white",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  "&:hover": {
+                    background: "rgba(255, 255, 255, 0.2)",
+                    transform: "scale(1.05)",
+                  },
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <AIIcon />
+              </IconButton>
+            </Tooltip>
 
             {/* Authentication Section */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
