@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Container,
@@ -17,12 +18,14 @@ import {
   TrendingUp as TrendingIcon,
   Movie as MovieIcon,
   AutoAwesome as SparkleIcon,
+  VideoCall as VideoCallIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { getPopularMovies, getLatestMovies } from "../services/movieApi.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import HeroSection from "../components/HeroSection.tsx";
 import ProtectedContent from "../components/ProtectedContent.tsx";
+import LiveModeAI from "../components/LiveModeAI.tsx";
 import { LoadingSpinner, ErrorState, SEO } from "../components/common/index.ts";
 import type { MovieResponse } from "../types/movie.ts";
 import type { UserContext } from "../services/cineSnapAi.ts";
@@ -32,6 +35,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
+  const [isLiveModeOpen, setIsLiveModeOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -255,15 +259,11 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button
-                        onClick={() =>
-                          alert(
-                            "🎙️ Live Mode Preview!\n\nComing Soon:\n• Real-time voice conversations\n• Video understanding\n• Instant interruptions\n• Multimodal experiences\n\nStay tuned for the most advanced movie AI!"
-                          )
-                        }
+                        onClick={() => setIsLiveModeOpen(true)}
                         variant="contained"
                         size="large"
                         fullWidth
-                        startIcon={<TrendingIcon />}
+                        startIcon={<VideoCallIcon />}
                         sx={{
                           background:
                             "linear-gradient(45deg, #FF6B6B 30%, #4ECDC4 90%)",
@@ -448,6 +448,12 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
           ))}
         </Grid>
       </Container>
+
+      {/* Live Mode AI Component */}
+      <LiveModeAI
+        open={isLiveModeOpen}
+        onClose={() => setIsLiveModeOpen(false)}
+      />
     </Box>
   );
 };
