@@ -72,7 +72,10 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
   const { listen, stop, supported } = useSpeechRecognition({
     onResult: (result: string) => {
       console.log("Speech result:", result);
-      setInputText(result);
+      if (result.trim()) {
+        setInputText(result);
+        setError(null); // Clear any previous errors
+      }
       setIsListening(false);
     },
     onEnd: () => {
@@ -82,7 +85,12 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
     onError: (error: any) => {
       console.error("Speech recognition error:", error);
       setIsListening(false);
-      setError("Voice recognition failed. Please try typing instead.");
+      // Only show error if it's a real problem, not just "not-allowed" which happens when user denies permission
+      if (error.error !== "not-allowed" && error.error !== "aborted") {
+        setError(
+          "Voice recognition issue. Please ensure microphone access is enabled."
+        );
+      }
     },
   });
 
@@ -186,8 +194,11 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
     } else {
       if (supported) {
         setIsListening(true);
-        setError(null);        listen({
+        setError(null);
+        setInputText(""); // Clear input when starting voice recognition
+        listen({
           interimResults: false,
+          continuous: false,
           lang: "en-US",
         });
       } else {
@@ -505,23 +516,35 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
               onKeyPress={handleKeyPress}
               placeholder={
                 isListening
-                  ? "Listening..."
+                  ? "🎤 Listening..."
                   : "Ask me about movies, your mood, or what you want to watch..."
               }
               disabled={isLoading || isListening}
               variant="outlined"
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  backgroundColor: "rgba(255, 255, 255, 0.9)",
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  color: "#1a1a1a",
                   "& fieldset": {
-                    borderColor: "rgba(255, 255, 255, 0.3)",
+                    borderColor: "rgba(255, 255, 255, 0.5)",
                   },
                   "&:hover fieldset": {
-                    borderColor: "rgba(255, 255, 255, 0.5)",
+                    borderColor: "rgba(255, 255, 255, 0.8)",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor: "white",
+                    borderWidth: "2px",
                   },
+                  "& input": {
+                    color: "#1a1a1a !important",
+                  },
+                  "& textarea": {
+                    color: "#1a1a1a !important",
+                  },
+                },
+                "& .MuiInputBase-input::placeholder": {
+                  color: "#666 !important",
+                  opacity: 1,
                 },
               }}
             />
