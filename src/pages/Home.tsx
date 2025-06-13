@@ -9,6 +9,8 @@ import {
   useMediaQuery,
   Button,
   Paper,
+  Card,
+  CardContent,
 } from "@mui/material";
 import {
   Psychology as AIIcon,
@@ -252,6 +254,111 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
             </Grid>
           </Paper>
         </motion.div>
+
+        {/* App Features Overview */}
+        <Grid container spacing={4} sx={{ mb: { xs: 6, sm: 8 } }}>
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card
+                sx={{
+                  height: "100%",
+                  background:
+                    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                  color: "white",
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    <TrendingIcon fontSize="large" />
+                    <Typography variant="h6" fontWeight="bold">
+                      Intelligent Discovery
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="body2"
+                    sx={{ opacity: 0.9, lineHeight: 1.6 }}
+                  >
+                    Our AI understands your preferences, mood, and viewing
+                    context to recommend movies you'll actually love. No more
+                    endless scrolling!
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <Card
+                sx={{
+                  height: "100%",
+                  background:
+                    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                  color: "white",
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    <MovieIcon fontSize="large" />
+                    <Typography variant="h6" fontWeight="bold">
+                      Complete Movie Database
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="body2"
+                    sx={{ opacity: 0.9, lineHeight: 1.6 }}
+                  >
+                    Access thousands of movies with detailed information,
+                    ratings, cast, trailers, and reviews all in one beautiful
+                    interface.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <Card
+                sx={{
+                  height: "100%",
+                  background:
+                    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                  color: "white",
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    <SparkleIcon fontSize="large" />
+                    <Typography variant="h6" fontWeight="bold">
+                      Conversational Interface
+                    </Typography>
+                  </Box>
+                  <Typography
+                    variant="body2"
+                    sx={{ opacity: 0.9, lineHeight: 1.6 }}
+                  >
+                    Chat naturally with our AI using voice or text. Just
+                    describe what you're in the mood for, and get instant
+                    personalized recommendations.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        </Grid>
 
         <Typography
           variant="h4"

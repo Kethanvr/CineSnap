@@ -1,6 +1,6 @@
 # 🤖 CineSnap AI Setup Guide
 
-Welcome to CineSnap AI! This guide will help you set up the AI-powered movie recommendation feature that uses Google's Gemini 2.0 Flash model.
+Welcome to CineSnap AI! This guide will help you set up the AI-powered movie recommendation feature that uses advanced conversational AI technology.
 
 ## 🚀 Features
 
@@ -13,7 +13,7 @@ Welcome to CineSnap AI! This guide will help you set up the AI-powered movie rec
 
 ## 🔧 Setup Instructions
 
-### 1. Get Your Gemini API Key
+### 1. Get Your AI API Key
 
 1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Sign in with your Google account
@@ -28,15 +28,15 @@ Create a `.env` file in the root directory with the following:
 # Your existing TMDB API key
 VITE_TMDB_API_KEY=your_tmdb_api_key_here
 
-# Add this new line for Gemini AI
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+# Add this new line for CineSnap AI
+VITE_GEMINI_API_KEY=your_ai_api_key_here
 ```
 
 ### 3. Install Dependencies
 
 The required dependencies should already be installed:
 
-- `@google/generative-ai` - Google's Gemini API SDK
+- `@google/generative-ai` - Advanced AI language model SDK
 - `react-speech-kit` - Voice input/output support
 
 If not, run:
