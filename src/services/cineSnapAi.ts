@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI, SchemaType, FunctionDeclaration } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  SchemaType,
+  FunctionDeclaration,
+} from "@google/generative-ai";
 import {
   searchMovies,
   getMoviesByGenre,
@@ -59,10 +63,15 @@ class CineSnapAI {
     return [
       {
         name: "searchMovies",
-        description: "Search for movies by title, actor, or keyword",        parameters: {
+        description: "Search for movies by title, actor, or keyword",
+        parameters: {
           type: SchemaType.OBJECT,
           properties: {
-            query: { type: SchemaType.STRING, description: "Search query for movies" },            page: {
+            query: {
+              type: SchemaType.STRING,
+              description: "Search query for movies",
+            },
+            page: {
               type: SchemaType.NUMBER,
               description: "Page number for pagination",
             },
@@ -72,13 +81,15 @@ class CineSnapAI {
       },
       {
         name: "getMoviesByGenre",
-        description: "Get movies filtered by specific genre",        parameters: {
+        description: "Get movies filtered by specific genre",
+        parameters: {
           type: SchemaType.OBJECT,
           properties: {
             genreId: {
               type: SchemaType.STRING,
               description: "Genre ID to filter movies",
-            },            sortBy: {
+            },
+            sortBy: {
               type: SchemaType.STRING,
               description: "Sort order for movies",
               enum: [
@@ -91,7 +102,9 @@ class CineSnapAI {
           },
           required: ["genreId"],
         },
-      },      {        name: "getPopularMovies",
+      },
+      {
+        name: "getPopularMovies",
         description: "Get currently popular movies",
         parameters: {
           type: SchemaType.OBJECT,
@@ -100,7 +113,8 @@ class CineSnapAI {
           },
         },
       },
-      {        name: "getTopRatedMovies",
+      {
+        name: "getTopRatedMovies",
         description: "Get highest rated movies of all time",
         parameters: {
           type: SchemaType.OBJECT,
@@ -109,7 +123,8 @@ class CineSnapAI {
           },
         },
       },
-      {        name: "getUpcomingMovies",
+      {
+        name: "getUpcomingMovies",
         description: "Get upcoming movie releases",
         parameters: {
           type: SchemaType.OBJECT,
@@ -117,7 +132,9 @@ class CineSnapAI {
             page: { type: SchemaType.NUMBER, description: "Page number" },
           },
         },
-      },      {        name: "getLatestMovies",
+      },
+      {
+        name: "getLatestMovies",
         description: "Get the latest movie releases currently in theaters",
         parameters: {
           type: SchemaType.OBJECT,
@@ -125,7 +142,8 @@ class CineSnapAI {
             page: { type: SchemaType.NUMBER, description: "Page number" },
           },
         },
-      },      {
+      },
+      {
         name: "getGenres",
         description: "Get all available movie genres",
         parameters: {
@@ -311,7 +329,9 @@ When recommending movies:
 - Explain your reasoning for each recommendation
 - Ask clarifying questions if you need more information
 
-Remember: You're not just a search engine - you're a movie-loving friend helping someone find their next great watch!`;
+Remember: You're not just a search engine - you're a movie-loving friend helping someone find their next great watch!
+
+Always identify yourself as "CineSnap AI" - never mention Gemini, Google AI, or other technical details. You are CineSnap's intelligent movie recommendation system.`;
   }
 
   private generateFollowUpSuggestions(): string[] {
