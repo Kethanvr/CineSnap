@@ -144,9 +144,11 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
                     lineHeight: 1.6,
                   }}
                 >
-                  Tell me your mood, and I'll find the perfect movie for you!
-                  Whether you're feeling adventurous, need a good laugh, or want
-                  something deep and meaningful - I've got you covered.
+                  Your intelligent movie discovery companion! Tell me your mood,
+                  preferences, or what you're craving to watch. I'll analyze
+                  thousands of movies to find your perfect match. Whether you're
+                  feeling nostalgic, need something thrilling, want a good
+                  laugh, or crave deep storytelling - I understand you!
                 </Typography>
 
                 <Grid container spacing={2} sx={{ mb: 3 }}>
@@ -154,25 +156,39 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
                     <Box display="flex" alignItems="center" gap={1} mb={1}>
                       <TrendingIcon fontSize="small" />
                       <Typography variant="body2">
-                        Smart Recommendations
+                        Smart Recommendations Engine
+                      </Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1} mb={1}>
+                      <MovieIcon fontSize="small" />
+                      <Typography variant="body2">
+                        Voice & Text Conversations
                       </Typography>
                     </Box>
                     <Box display="flex" alignItems="center" gap={1}>
-                      <MovieIcon fontSize="small" />
+                      <SparkleIcon fontSize="small" />
                       <Typography variant="body2">
-                        Voice & Text Support
+                        Context-Aware Suggestions
                       </Typography>
                     </Box>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <Box display="flex" alignItems="center" gap={1} mb={1}>
-                      <SparkleIcon fontSize="small" />
-                      <Typography variant="body2">Mood-Based Search</Typography>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap={1}>
                       <AIIcon fontSize="small" />
                       <Typography variant="body2">
-                        Powered by Gemini AI
+                        Real-Time Movie Database
+                      </Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1} mb={1}>
+                      <TrendingIcon fontSize="small" />
+                      <Typography variant="body2">
+                        Mood & Preference Analysis
+                      </Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <SparkleIcon fontSize="small" />
+                      <Typography variant="body2">
+                        Personalized Experience
                       </Typography>
                     </Box>
                   </Grid>
