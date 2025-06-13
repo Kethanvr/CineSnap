@@ -224,7 +224,7 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
                       </Button>
                     </motion.div>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={12}>
+                  <Grid item xs={12} sm={6} md={6}>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -246,6 +246,48 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
                         }}
                       >
                         Chat with AI
+                      </Button>
+                    </motion.div>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        onClick={() =>
+                          alert(
+                            "🎙️ Live Mode Preview!\n\nComing Soon:\n• Real-time voice conversations\n• Video understanding\n• Instant interruptions\n• Multimodal experiences\n\nStay tuned for the most advanced movie AI!"
+                          )
+                        }
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        startIcon={<TrendingIcon />}
+                        sx={{
+                          background:
+                            "linear-gradient(45deg, #FF6B6B 30%, #4ECDC4 90%)",
+                          color: "white",
+                          "&:hover": {
+                            background:
+                              "linear-gradient(45deg, #FF5252 30%, #26C6DA 90%)",
+                          },
+                          py: 1.5,
+                          animation: "pulse 2s infinite",
+                          "@keyframes pulse": {
+                            "0%": {
+                              boxShadow: "0 0 0 0 rgba(255, 107, 107, 0.7)",
+                            },
+                            "70%": {
+                              boxShadow: "0 0 0 10px rgba(255, 107, 107, 0)",
+                            },
+                            "100%": {
+                              boxShadow: "0 0 0 0 rgba(255, 107, 107, 0)",
+                            },
+                          },
+                        }}
+                      >
+                        🎙️ Live Mode
                       </Button>
                     </motion.div>
                   </Grid>
