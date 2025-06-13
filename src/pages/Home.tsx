@@ -7,8 +7,6 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
-  Card,
-  CardContent,
   Button,
   Paper,
 } from "@mui/material";
