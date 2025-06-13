@@ -58,7 +58,8 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isListening, setIsListening] = useState(false);  const [showMovies] = useState(true);
+  const [isListening, setIsListening] = useState(false);
+  const [showMovies] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -70,7 +71,12 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
   // Speech recognition for voice input
   const { listen, stop, supported } = useSpeechRecognition({
     onResult: (result: string) => {
+      console.log("Speech result:", result);
       setInputText(result);
+      setIsListening(false);
+    },
+    onEnd: () => {
+      console.log("Speech recognition ended");
       setIsListening(false);
     },
     onError: (error: any) => {
@@ -142,9 +148,18 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
       };
       setMessages((prev) => [...prev, aiMessage]);
 
-      // Speak the AI response (optional)
-      if (aiResponse.message.length < 200) {
-        speak({ text: aiResponse.message });
+      // Speak the AI response with better voice settings
+      if (aiResponse.message.length < 300) {
+        // Clean up the message for speech (remove emojis and special characters)
+        const cleanMessage = aiResponse.message
+          .replace(/[🎬🎭🎯🎤🌟🎮🎪🎨🎵🎲🎸]/g, "")
+          .replace(/[^\w\s.,!?-]/g, "");
+        speak({
+          text: cleanMessage,
+          rate: 0.9,
+          pitch: 1.0,
+          volume: 0.8,
+        });
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -171,9 +186,16 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
     } else {
       if (supported) {
         setIsListening(true);
-        listen({ interimResults: false });
+        setError(null);
+        listen({
+          interimResults: false,
+          continuous: false,
+          lang: "en-US",
+        });
       } else {
-        setError("Voice input is not supported in your browser.");
+        setError(
+          "Voice input is not supported in your browser. Please use Chrome, Edge, or Safari for voice features."
+        );
       }
     }
   };
@@ -247,7 +269,8 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
               <Box>
                 <Typography variant="h6" fontWeight="bold">
                   CineSnap AI
-                </Typography>                <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                </Typography>{" "}
+                <Typography variant="caption" sx={{ opacity: 0.8 }}>
                   Your personal movie companion
                 </Typography>
               </Box>
@@ -302,7 +325,9 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                   }
                   mb={2}
                 >
-                  <Box display="flex" alignItems="start" gap={1} maxWidth="80%">                    {message.role === "ai" && (
+                  <Box display="flex" alignItems="start" gap={1} maxWidth="80%">
+                    {" "}
+                    {message.role === "ai" && (
                       <Avatar
                         sx={{
                           bgcolor: "white",
@@ -314,7 +339,6 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                         <BotIcon fontSize="small" />
                       </Avatar>
                     )}
-
                     <Box>
                       <Paper
                         sx={{
@@ -329,7 +353,15 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                           minWidth: 100,
                         }}
                       >
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color:
+                              message.role === "user" ? "white" : "#1a1a1a",
+                            fontWeight: 500,
+                            lineHeight: 1.6,
+                          }}
+                        >
                           {message.content}
                         </Typography>
 
@@ -366,7 +398,16 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                               mb={2}
                             >
                               <MovieIcon fontSize="small" />
-                              <Typography variant="subtitle2" fontWeight="bold">
+                              <Typography
+                                variant="subtitle2"
+                                fontWeight="bold"
+                                sx={{
+                                  color:
+                                    message.role === "user"
+                                      ? "white"
+                                      : "#1a1a1a",
+                                }}
+                              >
                                 Recommendations
                               </Typography>
                             </Box>
@@ -387,7 +428,8 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                             </Grid>
                           </Box>
                         )}
-                      </Paper>                      <Typography
+                      </Paper>{" "}
+                      <Typography
                         variant="caption"
                         display="block"
                         mt={0.5}
@@ -398,7 +440,8 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                           minute: "2-digit",
                         })}
                       </Typography>
-                    </Box>                    {message.role === "user" && (
+                    </Box>{" "}
+                    {message.role === "user" && (
                       <Avatar
                         sx={{
                           bgcolor: "rgba(255, 255, 255, 0.2)",
@@ -418,7 +461,9 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
           {/* Loading indicator */}
           {isLoading && (
             <Box display="flex" justifyContent="flex-start" mb={2}>
-              <Box display="flex" alignItems="start" gap={1} maxWidth="80%">                <Avatar
+              <Box display="flex" alignItems="start" gap={1} maxWidth="80%">
+                {" "}
+                <Avatar
                   sx={{
                     bgcolor: "white",
                     color: "primary.main",
@@ -437,7 +482,7 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
                 >
                   <Box display="flex" alignItems="center" gap={1}>
                     <Skeleton variant="text" width={200} />
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" sx={{ color: "#666" }}>
                       Finding perfect movies...
                     </Typography>
                   </Box>
