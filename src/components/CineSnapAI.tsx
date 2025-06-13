@@ -186,10 +186,8 @@ const CineSnapAI: React.FC<CineSnapAIProps> = ({
     } else {
       if (supported) {
         setIsListening(true);
-        setError(null);
-        listen({
+        setError(null);        listen({
           interimResults: false,
-          continuous: false,
           lang: "en-US",
         });
       } else {
