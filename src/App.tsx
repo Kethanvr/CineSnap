@@ -13,6 +13,9 @@ import Footer from "./components/Footer.tsx";
 import CineSnapAI from "./components/CineSnapAI.tsx";
 import AIFloatingButton from "./components/AIFloatingButton.tsx";
 import { ScrollToTop } from "./components/common/index.ts";
+import { AutoAd } from "./components/ads";
+import { usePagePerformance } from "./hooks/useSEO";
+import StructuredData from "./components/seo/StructuredData";
 import type { UserContext } from "./services/cineSnapAi.ts";
 // import MovieCard from "./components/MovieCard";
 // Lazy load pages
@@ -52,6 +55,9 @@ function App() {
   const [isAIOpen, setIsAIOpen] = useState(false);
   const [aiContext, setAiContext] = useState<Partial<UserContext>>({});
 
+  // Initialize performance optimizations
+  usePagePerformance();
+
   // Function to open AI with specific context
   const openAIWithContext = (context?: Partial<UserContext>) => {
     if (context) {
@@ -68,7 +74,15 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />{" "}
         <Router>
-          <ScrollToTop />{" "}
+          <ScrollToTop />
+
+          {/* Global SEO Structured Data */}
+          <StructuredData type="WebApplication" data={null} />
+          <StructuredData type="Organization" data={null} />
+          <StructuredData type="WebSite" data={null} />
+
+          {/* Auto Ads Component - Enables automatic ad placement */}
+          <AutoAd />
           <Box
             sx={{
               minHeight: "100vh",

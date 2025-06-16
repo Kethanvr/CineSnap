@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import type { Movie, MovieResponse } from "../types/movie.ts";
 import { Search, TrendingUp } from "@mui/icons-material";
 import { useState } from "react";
+import { SEO } from "../components/common/index.ts";
+import { ResponsiveAd, InArticleAd } from "../components/ads";
 
 const SearchResults = () => {
   const theme = useTheme();
@@ -82,8 +84,18 @@ const SearchResults = () => {
     );
   }
 
+  const totalResults = data?.pages?.[0]?.total_results || 0;
+
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
+      <SEO
+        title={`Search Results for "${query}" | CineSnap`}
+        description={`Found ${totalResults} movies matching "${query}". Discover movies, get recommendations, and explore cinema with CineSnap's AI-powered search.`}
+        url={`https://cinesnap.kethanvr.me/search?query=${encodeURIComponent(
+          query
+        )}`}
+        keywords={`${query}, movie search, film search, movie finder, CineSnap search, ${query} movies`}
+      />
       <Container maxWidth="xl" sx={{ py: 4 }}>
         {/* Header */}
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
@@ -96,9 +108,12 @@ const SearchResults = () => {
             color="text.secondary"
             sx={{ ml: "auto" }}
           >
-            {data?.pages?.[0]?.total_results || 0} results found
+            {totalResults} results found
           </Typography>
         </Stack>
+
+        {/* Advertisement - After search header */}
+        <ResponsiveAd adSlot="7890123456" />
 
         {/* Results Grid */}
         {data?.pages.flatMap((page) => page.results).length === 0 ? (

@@ -18,6 +18,8 @@ import { getLatestMovies } from "../services/movieApi.ts";
 import { useNavigate } from "react-router-dom";
 import type { Movie } from "../types/movie.ts";
 import { CalendarToday } from "@mui/icons-material";
+import { SEO } from "../components/common/index.ts";
+import { ResponsiveAd, InArticleAd } from "../components/ads";
 
 interface MovieResponse {
   results: Movie[];
@@ -76,6 +78,12 @@ const Movies = () => {
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
+      <SEO
+        title="Latest Movies | CineSnap - Discover New Films"
+        description={`Discover ${totalResults} latest movies. Stay updated with the newest film releases, trending movies, and must-watch cinema on CineSnap.`}
+        url="https://cinesnap.kethanvr.me/movies"
+        keywords="latest movies, new movies, recent films, movie releases, trending movies, CineSnap"
+      />
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 4 }}>
           <CalendarToday sx={{ color: "primary.main" }} />
@@ -90,6 +98,9 @@ const Movies = () => {
             {totalResults} movies
           </Typography>
         </Stack>
+
+        {/* Advertisement - Top of movies page */}
+        <ResponsiveAd adSlot="5678901234" />
 
         <Grid container spacing={3}>
           {allMovies.map((movie) => (
@@ -132,6 +143,13 @@ const Movies = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Advertisement - Middle of movies list */}
+        {allMovies.length > 12 && (
+          <Grid item xs={12}>
+            <InArticleAd adSlot="6789012345" />
+          </Grid>
+        )}
 
         {hasNextPage && (
           <Box sx={{ textAlign: "center", mt: 4 }}>

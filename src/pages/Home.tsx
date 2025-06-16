@@ -27,6 +27,7 @@ import HeroSection from "../components/HeroSection.tsx";
 import ProtectedContent from "../components/ProtectedContent.tsx";
 import LiveModeAI from "../components/LiveModeAI.tsx";
 import { LoadingSpinner, ErrorState, SEO } from "../components/common/index.ts";
+import { ResponsiveAd, InArticleAd } from "../components/ads";
 import type { MovieResponse } from "../types/movie.ts";
 import type { UserContext } from "../services/cineSnapAi.ts";
 
@@ -297,6 +298,9 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
           </Paper>
         </motion.div>
 
+        {/* Advertisement - Top of page after hero */}
+        <ResponsiveAd adSlot="1234567890" />
+
         {/* App Features Overview */}
         <Grid container spacing={4} sx={{ mb: { xs: 6, sm: 8 } }}>
           <Grid item xs={12} md={4}>
@@ -402,6 +406,9 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
           </Grid>
         </Grid>
 
+        {/* Advertisement - Between features and latest releases */}
+        <InArticleAd adSlot="2345678901" />
+
         <Typography
           variant="h4"
           gutterBottom
@@ -427,6 +434,9 @@ const Home: React.FC<HomeProps> = ({ onOpenAI }) => {
         </Grid>
 
         <Divider sx={{ my: { xs: 6, sm: 8 } }} />
+
+        {/* Advertisement - Between latest and popular movies */}
+        <ResponsiveAd adSlot="3456789012" />
 
         <Typography
           variant="h4"

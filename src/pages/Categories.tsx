@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { getGenres } from "../services/movieApi.ts";
 import { LocalMovies } from "@mui/icons-material";
 import type { Genre } from "../types/movie.ts";
+import { SEO } from "../components/common/index.ts";
+import { ResponsiveAd } from "../components/ads";
 
 // Genre background images from Unsplash
 const genreBackgrounds = {
@@ -85,6 +87,14 @@ const Categories = () => {
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 4 }}>
+      <SEO
+        title="Movie Categories & Genres | CineSnap - Browse by Genre"
+        description={`Explore ${
+          genres?.length || 20
+        } movie genres and categories. Find action, comedy, drama, horror, sci-fi, and more movies on CineSnap - your AI-powered movie discovery platform.`}
+        url="https://cinesnap.kethanvr.me/categories"
+        keywords="movie genres, movie categories, action movies, comedy films, drama movies, horror films, sci-fi movies, CineSnap genres"
+      />
       <Container maxWidth="xl">
         <Typography
           variant="h4"
@@ -100,6 +110,9 @@ const Categories = () => {
           <LocalMovies />
           Browse Movies by Genre
         </Typography>
+
+        {/* Advertisement - Top of categories page */}
+        <ResponsiveAd adSlot="8901234567" />
 
         <Grid container spacing={3}>
           {genres?.map((genre, index) => (

@@ -26,12 +26,17 @@ import {
   determineMovieSuccess,
 } from "../services/movieApi.ts";
 import type { Movie } from "../types/movie.ts";
-import {
-  ArrowForward,
-  Theaters,
-} from "@mui/icons-material";
+import { ArrowForward, Theaters } from "@mui/icons-material";
 import { formatDate } from "../utils/dateUtils";
-import { LoadingSpinner, ErrorState, BreadcrumbNav, SEO } from "../components/common/index.ts";
+import {
+  LoadingSpinner,
+  ErrorState,
+  BreadcrumbNav,
+  SEO,
+} from "../components/common/index.ts";
+import { ResponsiveAd, InArticleAd } from "../components/ads";
+import { useMovieSEO, usePagePerformance } from "../hooks/useSEO";
+import StructuredData from "../components/seo/StructuredData";
 
 interface Provider {
   provider_id: number;
@@ -42,9 +47,13 @@ interface Provider {
 const MovieDetails = () => {
   const { id } = useParams<{ id: string }>();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { data: movie, isLoading: isLoadingMovie, error: movieError } = useQuery<Movie>({
+  const {
+    data: movie,
+    isLoading: isLoadingMovie,
+    error: movieError,
+  } = useQuery<Movie>({
     queryKey: ["movie", id],
     queryFn: () => getMovieDetails(id || ""),
     enabled: !!id,
@@ -64,9 +73,9 @@ const MovieDetails = () => {
 
   if (movieError || !movie) {
     return (
-      <ErrorState 
+      <ErrorState
         title="Movie Not Found"
-        message="The movie you're looking for could not be found." 
+        message="The movie you're looking for could not be found."
         onRetry={() => window.location.reload()}
         fullScreen
       />
@@ -86,26 +95,42 @@ const MovieDetails = () => {
   }
 
   const movieStatus = movie ? determineMovieSuccess(movie) : null;
-  const usProviders = watchProviders?.US;  return (
+  const usProviders = watchProviders?.US;
+
+  // Use advanced SEO hooks
+  useMovieSEO(movie);
+  usePagePerformance();
+
+  return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
-      <SEO 
-        title={`${movie.title} (${new Date(movie.release_date).getFullYear()}) | CineSnap`}
-        description={movie.overview || `Watch ${movie.title} and discover more movies on CineSnap - your AI-powered movie discovery companion.`}
-        image={movie.backdrop_path ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}` : "https://cinesnap.kethanvr.me/og-image.jpg"}
+      <SEO
+        title={`${movie.title} (${new Date(
+          movie.release_date
+        ).getFullYear()}) | CineSnap`}
+        description={
+          movie.overview ||
+          `Watch ${movie.title} and discover more movies on CineSnap - your AI-powered movie discovery companion.`
+        }
+        image={
+          movie.backdrop_path
+            ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`
+            : "https://cinesnap.kethanvr.me/og-image.jpg"
+        }
         url={`https://cinesnap.kethanvr.me/movie/${movie.id}`}
-        keywords={`${movie.title}, ${movie.genres?.map(g => g.name).join(', ')}, Movie, Film, CineSnap`}
+        keywords={`${movie.title}, ${movie.genres
+          ?.map((g) => g.name)
+          .join(", ")}, Movie, Film, CineSnap`}
       />
       {/* Breadcrumb Navigation */}
       <Container maxWidth="xl" sx={{ pt: { xs: 2, sm: 3 } }}>
-        <BreadcrumbNav 
+        <BreadcrumbNav
           items={[
-            { label: 'Home', path: '/' },
-            { label: 'Movies', path: '/movies' },
-            { label: movie.title }
+            { label: "Home", path: "/" },
+            { label: "Movies", path: "/movies" },
+            { label: movie.title },
           ]}
         />
       </Container>
-
       {/* Backdrop */}
       <Box
         sx={{
@@ -125,7 +150,8 @@ const MovieDetails = () => {
             objectFit: "cover",
           }}
         />
-      </Box>      {/* Content */}
+      </Box>{" "}
+      {/* Content */}
       <Container
         maxWidth="xl"
         sx={{
@@ -143,8 +169,8 @@ const MovieDetails = () => {
                 borderRadius: 2,
                 overflow: "hidden",
                 boxShadow: (theme) => theme.shadows[20],
-                mx: { xs: 'auto', sm: 0 },
-                maxWidth: { xs: 250, sm: '100%' },
+                mx: { xs: "auto", sm: 0 },
+                maxWidth: { xs: 250, sm: "100%" },
               }}
             >
               <CardMedia
@@ -168,20 +194,31 @@ const MovieDetails = () => {
               sx={{
                 color: "white",
                 textShadow: "0 2px 4px rgba(0,0,0,0.5)",
-                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem", lg: "3rem" },
+                fontSize: {
+                  xs: "1.5rem",
+                  sm: "2rem",
+                  md: "2.5rem",
+                  lg: "3rem",
+                },
                 mb: { xs: 1, sm: 2 },
-                textAlign: { xs: 'center', sm: 'left' },
+                textAlign: { xs: "center", sm: "left" },
               }}
             >
               {movie.title}
-            </Typography>            <Stack
+            </Typography>{" "}
+            <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={2}
               alignItems={{ xs: "center", sm: "flex-start" }}
               sx={{ mb: 3 }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Rating value={movie.vote_average / 2} precision={0.5} readOnly size="small" />
+                <Rating
+                  value={movie.vote_average / 2}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
                 <Typography color="text.secondary" variant="body2">
                   {movie.vote_average.toFixed(1)}/10
                 </Typography>
@@ -190,30 +227,30 @@ const MovieDetails = () => {
                 {movie.vote_count.toLocaleString()} votes
               </Typography>
             </Stack>
-
             <Stack
               direction="row"
               spacing={1}
-              sx={{ 
-                mb: 3, 
-                flexWrap: "wrap", 
+              sx={{
+                mb: 3,
+                flexWrap: "wrap",
                 gap: 1,
-                justifyContent: { xs: 'center', sm: 'flex-start' }
+                justifyContent: { xs: "center", sm: "flex-start" },
               }}
             >
-              {movie.genres.slice(0, isMobile ? 3 : movie.genres.length).map((genre) => (
-                <Chip
-                  key={genre.id}
-                  label={genre.name}
-                  size={isMobile ? "small" : "medium"}
-                  sx={{
-                    bgcolor: "primary.main",
-                    color: "white",
-                  }}
-                />
-              ))}
+              {movie.genres
+                .slice(0, isMobile ? 3 : movie.genres.length)
+                .map((genre) => (
+                  <Chip
+                    key={genre.id}
+                    label={genre.name}
+                    size={isMobile ? "small" : "medium"}
+                    sx={{
+                      bgcolor: "primary.main",
+                      color: "white",
+                    }}
+                  />
+                ))}
             </Stack>
-
             <Typography
               variant="body1"
               sx={{
@@ -222,14 +259,19 @@ const MovieDetails = () => {
                 fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
                 maxWidth: "800px",
                 lineHeight: 1.7,
-                textAlign: { xs: 'center', sm: 'left' },
+                textAlign: { xs: "center", sm: "left" },
               }}
             >
               {movie.overview}
             </Typography>
-
-            <Divider sx={{ my: { xs: 3, md: 4 }, borderColor: "rgba(255,255,255,0.1)" }} />
-
+            <Divider
+              sx={{
+                my: { xs: 3, md: 4 },
+                borderColor: "rgba(255,255,255,0.1)",
+              }}
+            />
+            {/* Advertisement - After movie overview */}
+            <ResponsiveAd adSlot="4567890123" />
             {/* Feature Cards */}
             <Grid container spacing={{ xs: 2, md: 3 }}>
               {/* Additional Info Card */}
@@ -244,10 +286,13 @@ const MovieDetails = () => {
                         alignItems: "center",
                         mb: { xs: 2, sm: 3 },
                         flexDirection: { xs: "column", sm: "row" },
-                        gap: { xs: 1, sm: 0 }
+                        gap: { xs: 1, sm: 0 },
                       }}
                     >
-                      <Typography variant="h6" sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+                      >
                         Movie Info
                       </Typography>
                       <Button
@@ -283,7 +328,10 @@ const MovieDetails = () => {
                       </Box>
                       {movieStatus && (
                         <Box>
-                          <Typography variant="subtitle2" color="text.secondary">
+                          <Typography
+                            variant="subtitle2"
+                            color="text.secondary"
+                          >
                             Box Office Performance
                           </Typography>
                           <Chip
@@ -315,12 +363,19 @@ const MovieDetails = () => {
                       </Typography>
                       {usProviders.flatrate && (
                         <Box sx={{ mb: 3 }}>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                          <Typography
+                            variant="subtitle2"
+                            color="text.secondary"
+                            gutterBottom
+                          >
                             Stream
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
                             {usProviders.flatrate.map((provider: Provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                              <Tooltip
+                                key={provider.provider_id}
+                                title={provider.provider_name}
+                              >
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
                                   alt={provider.provider_name}
@@ -333,12 +388,19 @@ const MovieDetails = () => {
                       )}
                       {usProviders.rent && (
                         <Box sx={{ mb: 3 }}>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                          <Typography
+                            variant="subtitle2"
+                            color="text.secondary"
+                            gutterBottom
+                          >
                             Rent
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
                             {usProviders.rent.map((provider: Provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                              <Tooltip
+                                key={provider.provider_id}
+                                title={provider.provider_name}
+                              >
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
                                   alt={provider.provider_name}
@@ -351,12 +413,19 @@ const MovieDetails = () => {
                       )}
                       {usProviders.buy && (
                         <Box>
-                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                          <Typography
+                            variant="subtitle2"
+                            color="text.secondary"
+                            gutterBottom
+                          >
                             Buy
                           </Typography>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
                             {usProviders.buy.map((provider: Provider) => (
-                              <Tooltip key={provider.provider_id} title={provider.provider_name}>
+                              <Tooltip
+                                key={provider.provider_id}
+                                title={provider.provider_name}
+                              >
                                 <Avatar
                                   src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
                                   alt={provider.provider_name}

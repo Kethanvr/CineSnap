@@ -1,3 +1,21 @@
 User-agent: *
 Allow: /
+
+# Important pages
+Allow: /movies
+Allow: /search
+Allow: /categories
+Allow: /movie/*
+Allow: /genre/*
+Allow: /about
+Allow: /contact
+
+# Block admin paths (if any in future)
+Disallow: /admin/
+Disallow: /api/private/
+
+# Sitemap location
 Sitemap: https://cinesnap.kethanvr.me/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
