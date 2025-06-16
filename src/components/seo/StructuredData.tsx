@@ -91,7 +91,6 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data }) => {
           "@type": "Organization",
           name: company.name,
         })),
-        countryOfOrigin: movie.origin_country,
         inLanguage: movie.original_language,
       };
       break;

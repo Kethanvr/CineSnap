@@ -21,7 +21,7 @@ import type { Movie, MovieResponse } from "../types/movie.ts";
 import { Search, TrendingUp } from "@mui/icons-material";
 import { useState } from "react";
 import { SEO } from "../components/common/index.ts";
-import { ResponsiveAd, InArticleAd } from "../components/ads";
+import { ResponsiveAd } from "../components/ads";
 
 const SearchResults = () => {
   const theme = useTheme();

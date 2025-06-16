@@ -34,9 +34,8 @@ import {
   BreadcrumbNav,
   SEO,
 } from "../components/common/index.ts";
-import { ResponsiveAd, InArticleAd } from "../components/ads";
+import { ResponsiveAd } from "../components/ads";
 import { useMovieSEO, usePagePerformance } from "../hooks/useSEO";
-import StructuredData from "../components/seo/StructuredData";
 
 interface Provider {
   provider_id: number;
